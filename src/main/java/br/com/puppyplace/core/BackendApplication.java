@@ -1,4 +1,4 @@
-package br.com.puppyplace.backend;
+package br.com.puppyplace.core;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
