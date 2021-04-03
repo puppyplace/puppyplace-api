@@ -30,8 +30,11 @@ docker:
   stage: image
   services:
     - docker:dind
+  before_script:
+    - docker login --username $DOCKER_HUB_USER --password $DOCKER_HUB_TOKEN docker.io
   script:
-    - docker build -t lcsjr/ms-hello:latest .
+    - docker build -t lcsjr/$HEROKU_APP_DEV:latest .
+    - docker push lcsjr/$HEROKU_APP_DEV:latest
   only:
     - feature/cicd-heroku
 
