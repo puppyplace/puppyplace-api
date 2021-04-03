@@ -33,8 +33,8 @@ docker:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build -t lcsjr/$HEROKU_APP_DEV:latest .
-    - docker push lcsjr/$HEROKU_APP_DEV:latest
+    - docker build -t lcsjr/puppyplace-api-dev:latest .
+    - docker push lcsjr/puppyplace-api-dev:latest
   only:
     - feature/cicd-heroku
 
