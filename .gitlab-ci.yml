@@ -31,7 +31,7 @@ docker:
   services:
     - docker:dind
   before_script:
-    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io
+    - docker login --username $DOCKER_USER --password $DOCKER_PASSWORD docker.io
   script:
     - docker build -t lcsjr/$HEROKU_APP_DEV:latest .
     - docker push lcsjr/$HEROKU_APP_DEV:latest
