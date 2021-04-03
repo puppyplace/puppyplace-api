@@ -21,7 +21,7 @@ java_maven:
     - mvn package -DskipTests
   artifacts:
     paths:
-      - target/app-0.0.1-SNAPSHOT.jar
+      - target/backend-0.0.1-SNAPSHOT.jar
   only:
     - feature/cicd-heroku
 
@@ -31,10 +31,10 @@ docker:
   services:
     - docker:dind
   before_script:
-    - docker login --username $DOCKER_HUB_USER --password $DOCKER_HUB_TOKEN docker.io
+    - docker login --username $DOCKER_HUB_USER1 --password $DOCKER_HUB_TOKEN1 docker.io
   script:
-    - docker build -t lcsjr/$HEROKU_APP_DEV:latest .
-    - docker push lcsjr/$HEROKU_APP_DEV:latest
+    - docker build -t lcsjr/$HEROKU_APP_DEV1:latest .
+    - docker push lcsjr/$HEROKU_APP_DEV1:latest
   only:
     - feature/cicd-heroku
 
@@ -45,6 +45,6 @@ heroku:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP_DEV1 --api-key=$HEROKU_API_KEY1
   only:
     - feature/cicd-heroku
