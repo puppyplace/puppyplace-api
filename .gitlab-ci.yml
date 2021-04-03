@@ -1,0 +1,35 @@
+stages:
+  - tests
+  - build
+  - deploy
+
+test:
+  stage: tests
+  image: maven:3.6-openjdk-11
+  script:
+    - echo "Iniciando Testes da aplicacao"
+    - mvn test
+  only:
+    - cicd-heroku
+
+java_maven:
+  stage: build
+  image: maven:3.6-openjdk-11
+  script:
+    - echo "Iniciando Build da aplicacao"
+    - mvn package -DskipTests
+  artifacts:
+    paths:
+      - target/app-0.0.1-SNAPSHOT.jar
+  only:
+    - cicd-heroku
+heroku:
+  stage: deploy
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY
+  only:
+    - cicd-heroku
