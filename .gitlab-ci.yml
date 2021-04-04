@@ -1,7 +1,6 @@
 stages:
   - tests
   - build
-  - image
   - deploy
 
 test:
@@ -22,18 +21,6 @@ java_maven:
   artifacts:
     paths:
       - target/backend-0.0.1-SNAPSHOT.jar
-  only:
-    - feature/cicd-heroku
-
-docker:
-  image: docker:latest
-  stage: image
-  services:
-    - docker:dind
-  script:
-    - docker build -t lcsjr/puppyplace-api-dev:latest .
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker push lcsjr/puppyplace-api-dev:latest
   only:
     - feature/cicd-heroku
 
