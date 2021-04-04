@@ -20,8 +20,8 @@ public class LeadServiceImpl implements LeadService {
                 .cellphone(leadDTO.getCellphone())
                 .interest(leadDTO.getInterest())
                 .build();
-        leadRepository.save(lead);
-        return new LeadDTO(lead);
+        var leadSaved = leadRepository.save(lead);
+        return new LeadDTO(leadSaved);
     }
 
 
