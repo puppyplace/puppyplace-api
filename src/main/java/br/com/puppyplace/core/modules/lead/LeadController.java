@@ -18,7 +18,6 @@ public class LeadController {
     private LeadService leadService;
 
     @PostMapping
-    @Operation(summary = "Create Lead")
     public ResponseEntity<LeadDTO> create(@RequestBody LeadDTO leadDTO){
         log.info("[POST][LEAD] Request: {}", leadDTO);
         var createdLead = leadService.createLead(leadDTO);
