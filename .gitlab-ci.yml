@@ -1,0 +1,74 @@
+cache:
+  paths:
+    - .m2/repository
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  
+stages:
+  - build
+  - tests
+  - deploy
+  - code_analysis
+
+test:
+  stage: tests
+  image: maven:3.6-openjdk-11
+  script:
+    - echo "Iniciando Testes da aplicacao"
+    - mvn test
+  only:
+    - master
+    - develop
+
+java_maven:
+  stage: build
+  image: maven:3.6-openjdk-11
+  script:
+    - echo "Iniciando Build da aplicacao"
+    - mvn package -DskipTests
+  artifacts:
+    paths:
+      - target/backend*.jar
+  only:
+    - master
+    - develop
+
+stating:
+  stage: deploy
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY
+  only:
+    - develop
+
+production:
+  stage: deploy
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+  only:
+    - master
+
+sonarqube-check:
+  stage: code_analysis
+  image: maven:3.6.3-jdk-11
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  only:
+    - master
+    - develop
