@@ -5,6 +5,6 @@ COPY . /usr/src/app
 RUN mvn --batch-mode -f /usr/src/app/pom.xml clean package
 
 FROM openjdk:11-jdk
-COPY --from=BUILD /usr/src/app/target/backend-0.0.1-SNAPSHOT.jar backend.jar
+COPY --from=BUILD /usr/src/app/target/backend*.jar backend.jar
 
 ENTRYPOINT ["java","-jar","backend.jar"]
