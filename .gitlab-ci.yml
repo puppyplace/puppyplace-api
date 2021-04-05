@@ -18,7 +18,8 @@ test:
     - echo "Iniciando Testes da aplicacao"
     - mvn test
   only:
-    - feature/cicd-heroku
+    - master
+    - develop
 
 java_maven:
   stage: build
@@ -28,11 +29,12 @@ java_maven:
     - mvn package -DskipTests
   artifacts:
     paths:
-      - target/backend-0.0.1-SNAPSHOT.jar
+      - target/backend*.jar
   only:
-    - feature/cicd-heroku
+    - master
+    - develop
 
-heroku:
+stating:
   stage: deploy
   image: ruby:latest
   script:
@@ -41,7 +43,18 @@ heroku:
     - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_DEV --api-key=$HEROKU_API_KEY
   only:
-    - feature/cicd-heroku
+    - develop
+
+production:
+  stage: deploy
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+  only:
+    - master
 
 sonarqube-check:
   stage: code_analysis
@@ -57,4 +70,5 @@ sonarqube-check:
     - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
   allow_failure: true
   only:
-    - feature/cicd-heroku
+    - master
+    - develop
