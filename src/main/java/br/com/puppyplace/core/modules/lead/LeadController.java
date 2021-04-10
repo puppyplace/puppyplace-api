@@ -23,10 +23,10 @@ public class LeadController {
 
     @PostMapping
     public ResponseEntity<LeadDTO> create(@Valid @RequestBody LeadDTO leadDTO){
-        log.info("[POST][LEAD] Request: {}", leadDTO);
-        var createdLead = leadService.createLead(leadDTO);
+        log.info(">>> [POST] A new lead received. Request: {}", leadDTO);
+        var createdLead = this.leadService.createLead(leadDTO);
 
-        log.info("[POST][LEAD] Response: {}", createdLead);
+        log.info(">>> Response: {}", createdLead);
         return ResponseEntity.ok(createdLead);
     }
 }

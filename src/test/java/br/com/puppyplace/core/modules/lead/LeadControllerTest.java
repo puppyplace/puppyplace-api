@@ -1,52 +1,98 @@
 package br.com.puppyplace.core.modules.lead;
 
-import br.com.puppyplace.core.modules.lead.dtos.LeadDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jeasy.random.EasyRandom;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-
+import static org.jeasy.random.FieldPredicates.named;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.jeasy.random.EasyRandom;
+import org.jeasy.random.EasyRandomParameters;
+import org.jeasy.random.randomizers.EmailRandomizer;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.puppyplace.core.modules.lead.dtos.LeadDTO;
+
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = LeadController.class)
 public class LeadControllerTest {
-    @Autowired
-    private MockMvc httpRequest;
+	@Autowired
+	private MockMvc httpRequest;
 
-    @Autowired
-    private ObjectMapper mapper;
+	@Autowired
+	private ObjectMapper mapper;
 
-    EasyRandom easyRandom = new EasyRandom();
+	@MockBean
+	private LeadService leadService;	
 
-    @MockBean
-    private LeadService leadService;
+	private EasyRandom easyRandom;
+
+	@BeforeEach
+	void init() {
+		var emailRandomizer = new EmailRandomizer();
+		var parameters = new EasyRandomParameters().randomize(named("email"), () -> emailRandomizer.getRandomValue());
+		this.easyRandom = new EasyRandom(parameters);
+	}
+
+	@Test
+	void shouldReturnSuccess_WhenSendANewCorrectLead() throws Exception {
+		//given
+		var leadDTO = easyRandom.nextObject(LeadDTO.class);
+		when(leadService.createLead(any(LeadDTO.class))).thenReturn(leadDTO);
+
+		//when
+		httpRequest.perform(post("/lead").contentType("application/json").content(mapper.writeValueAsString(leadDTO)))
+				.andExpect(status().isOk()).andExpect(jsonPath("id").value(leadDTO.getId().toString()))
+				.andExpect(jsonPath("name").value(leadDTO.getName()))
+				.andExpect(jsonPath("email").value(leadDTO.getEmail()));
+		
+		// then
+		verify(leadService, times(1)).createLead(leadDTO);
+	}
 
     @Test
-    void createLeadWithSuccess() throws Exception{
+    void shouldReturnError_WhenSendANewLeadWithInvalidEmail() throws Exception{
+    	//given
         var leadDTO = easyRandom.nextObject(LeadDTO.class);
+        leadDTO.setEmail("invalid");        
         when(leadService.createLead(any(LeadDTO.class))).thenReturn(leadDTO);
 
+        //when
         httpRequest.perform(post("/lead")
-                .contentType("application/json")
-                .content(mapper.writeValueAsString(leadDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(leadDTO.getId()))
-                .andExpect(jsonPath("name").value(leadDTO.getName()))
-                .andExpect(jsonPath("email").value(leadDTO.getEmail()))
-                .andExpect(jsonPath("cellphone").value(leadDTO.getCellphone()))
-                .andExpect(jsonPath("interest").value(leadDTO.getInterest().toString()));
+            .contentType("application/json")
+            .content(mapper.writeValueAsString(leadDTO)))
+            .andExpect(status().isBadRequest());                
 
+		// then
+		verify(leadService, times(0)).createLead(any(LeadDTO.class));
+    }
+    
+    @Test
+    void shouldReturnError_WhenSendANewLeadWithEmptyName() throws Exception{
+    	//given
+        var leadDTO = easyRandom.nextObject(LeadDTO.class);
+        leadDTO.setName("");
+        when(leadService.createLead(any(LeadDTO.class))).thenReturn(leadDTO);
+
+        //when
+        httpRequest.perform(post("/lead")
+            .contentType("application/json")
+            .content(mapper.writeValueAsString(leadDTO)))
+            .andExpect(status().isBadRequest());                
+
+		// then
+		verify(leadService, times(0)).createLead(any(LeadDTO.class));
     }
 }

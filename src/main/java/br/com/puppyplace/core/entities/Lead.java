@@ -1,30 +1,34 @@
 package br.com.puppyplace.core.entities;
 
+import java.util.UUID;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import br.com.puppyplace.core.commons.enums.Interest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
-@Data
 @Builder
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-public class Lead {
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class Lead extends AbstractEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
+    
+    @Column
     private String name;
+    
+    @Column
     private String email;
-    private String cellphone;
-
-    @Enumerated(EnumType.STRING)
-    private Interest interest = Interest.PRODUCT;
 }

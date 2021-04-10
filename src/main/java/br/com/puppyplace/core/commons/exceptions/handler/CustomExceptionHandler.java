@@ -16,7 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.puppyplace.core.commons.exceptions.ErrorModel;
-import br.com.puppyplace.core.commons.exceptions.RegraDeNegocioException;
+import br.com.puppyplace.core.commons.exceptions.EmailUnavailableException;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,13 +40,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	
-	@ExceptionHandler(RegraDeNegocioException.class)
+	@ExceptionHandler(EmailUnavailableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ErrorModel> handleRegraDeNegocioException(RegraDeNegocioException ex){	
+	public ResponseEntity<ErrorModel> handleRegraDeNegocioException(EmailUnavailableException ex){	
 		
 		var erroBody = ErrorModel.builder()
 				.message(ex.getMessage())
-				.error_code("5")
 				.statusCode(HttpStatus.BAD_REQUEST.toString())
 				.build();
 		

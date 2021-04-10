@@ -1,14 +1,14 @@
 package br.com.puppyplace.core.commons.exceptions;
 
-public class RegraDeNegocioException extends RuntimeException {
+public class EmailUnavailableException extends RuntimeException {
 
 	private static final long serialVersionUID = 5115006423246459100L;
 
-	public RegraDeNegocioException() {
+	public EmailUnavailableException() {
 		super();
 	}
 	
-	public RegraDeNegocioException(String message) {
+	public EmailUnavailableException(String message) {
 		super(message);
 	}
 	

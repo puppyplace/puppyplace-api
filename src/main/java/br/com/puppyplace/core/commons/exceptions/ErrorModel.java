@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Builder
-@JsonPropertyOrder({ "error", "status_code", "message" })
+@JsonPropertyOrder({ "error", "status_code", "message", "messages" })
 @JsonInclude(Include.NON_NULL)
 public class ErrorModel implements Serializable {
 
@@ -21,8 +21,6 @@ public class ErrorModel implements Serializable {
 
 	@JsonProperty("status_code")
 	private String statusCode;
-	
-	private String error_code;
 
 	private String message;
 
