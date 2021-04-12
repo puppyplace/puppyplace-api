@@ -1,5 +1,6 @@
 package br.com.puppyplace.core.entities;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,22 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Where;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 @Entity(name = "product")
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@Where(clause="deleted=false")
 public class Product extends AbstractEntity {
 
     @Id
@@ -31,14 +47,14 @@ public class Product extends AbstractEntity {
     @Column(nullable = false)
     private Float price;
 
-    @Column
-    private Float promotional_price;
+    @Column(name = "promotional_price")
+    private Float promotionalPrice;
 
     @Column(nullable = false)
     private Integer stock;
 
-    @Column
-    private String avatar_url;
+    @Column(name = "avatar_url")
+    private String avatarUrl;
 
     @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinTable(name="category_product")
@@ -54,10 +70,16 @@ public class Product extends AbstractEntity {
     @Column
     private String unit;
 
-    @Column
-    private String product_code;
+    @Column(name = "product_code", unique = true)
+    private String productCode;
 
-    @Column
-    private String isbn_code;
+    @Column(name = "isbn_code")
+    private String isbnCode;
+    
+    @ColumnDefault("false")
+    @Column(name = "deleted")
+    private boolean deleted;
 
+    @Column(name = "deleted_at")
+	protected Date deletedAt;
 }

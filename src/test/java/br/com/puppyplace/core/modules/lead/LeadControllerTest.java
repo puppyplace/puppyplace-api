@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.puppyplace.core.modules.lead.dtos.LeadDTO;
+import br.com.puppyplace.core.modules.lead.dto.LeadDTO;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = LeadController.class)

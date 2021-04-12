@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,13 +16,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import br.com.puppyplace.core.commons.exceptions.ErrorModel;
+import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.EmailUnavailableException;
+import br.com.puppyplace.core.commons.exceptions.ErrorModel;
+import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-	
-	
+
 	@Override
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -38,21 +40,23 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 	}
-	
-	
-	@ExceptionHandler(EmailUnavailableException.class)
+
+	@ExceptionHandler({EmailUnavailableException.class, ResourceNotFoundException.class, BusinessException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ErrorModel> handleRegraDeNegocioException(EmailUnavailableException ex){	
-		
-		var erroBody = ErrorModel.builder()
-				.message(ex.getMessage())
-				.statusCode(HttpStatus.BAD_REQUEST.toString())
+	public ResponseEntity<ErrorModel> handleRegraDeNegocioException(RuntimeException ex) {
+		var erroBody = ErrorModel.builder().message(ex.getMessage()).statusCode(HttpStatus.BAD_REQUEST.toString())
 				.build();
-		
+
 		return new ResponseEntity<>(erroBody, HttpStatus.BAD_REQUEST);
-		
 	}
 
-	
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+				var erroBody = ErrorModel.builder().message(ex.getMessage()).statusCode(HttpStatus.BAD_REQUEST.toString())
+				.build();
+
+		return new ResponseEntity<>(erroBody, HttpStatus.BAD_REQUEST);
+	}
 
 }

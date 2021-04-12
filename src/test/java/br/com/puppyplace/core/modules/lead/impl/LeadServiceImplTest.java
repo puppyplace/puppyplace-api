@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import br.com.puppyplace.core.commons.exceptions.EmailUnavailableException;
 import br.com.puppyplace.core.entities.Lead;
 import br.com.puppyplace.core.modules.lead.LeadRepository;
-import br.com.puppyplace.core.modules.lead.dtos.LeadDTO;
+import br.com.puppyplace.core.modules.lead.dto.LeadDTO;
 
 
 @ExtendWith(SpringExtension.class)

@@ -33,4 +33,8 @@ public class Partner extends AbstractEntity {
 
     @OneToMany(mappedBy = "partner", cascade = CascadeType.ALL)
     private List<Product> products;
+
+    public Partner(UUID id){
+        this.id = id;
+    }
 }

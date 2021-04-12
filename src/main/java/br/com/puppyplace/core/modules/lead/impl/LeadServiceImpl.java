@@ -7,7 +7,7 @@ import br.com.puppyplace.core.commons.exceptions.EmailUnavailableException;
 import br.com.puppyplace.core.entities.Lead;
 import br.com.puppyplace.core.modules.lead.LeadRepository;
 import br.com.puppyplace.core.modules.lead.LeadService;
-import br.com.puppyplace.core.modules.lead.dtos.LeadDTO;
+import br.com.puppyplace.core.modules.lead.dto.LeadDTO;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

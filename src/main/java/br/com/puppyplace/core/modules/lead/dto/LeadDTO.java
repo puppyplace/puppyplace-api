@@ -1,4 +1,4 @@
-package br.com.puppyplace.core.modules.lead.dtos;
+package br.com.puppyplace.core.modules.lead.dto;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -39,11 +39,4 @@ public class LeadDTO implements Serializable {
         this.name = lead.getName();
         this.email = lead.getEmail();
     }
-
-	@Override
-	public String toString() {
-		return "{id:" + id + ", name:" + name + ", email:" + email + "}";
-	}   
-    
-
 }
