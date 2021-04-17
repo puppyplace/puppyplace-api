@@ -54,7 +54,7 @@ public class LeadControllerTest {
 
 		//when
 		httpRequest.perform(post("/lead").contentType("application/json").content(mapper.writeValueAsString(leadDTO)))
-				.andExpect(status().isOk()).andExpect(jsonPath("id").value(leadDTO.getId().toString()))
+				.andExpect(status().isCreated()).andExpect(jsonPath("id").value(leadDTO.getId().toString()))
 				.andExpect(jsonPath("name").value(leadDTO.getName()))
 				.andExpect(jsonPath("email").value(leadDTO.getEmail()));
 		
