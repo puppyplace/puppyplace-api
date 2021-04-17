@@ -9,9 +9,9 @@
 2. **Adicionar instancia do postgres**
 
 ```console
-$ docker run --name projeto-integrado-puc-puppyplace -d -p 5432:5432 -e POSTGRES_PASSWORD=docker postgres
+$ docker run --name puppyplace -d -p 5432:5432 -e POSTGRES_PASSWORD=docker postgres
 ```
-  
+
 Se a sua porta 5432 já estiver em uso, substituir por outra (apenas do lado esquerdo ex: 5431:5432).
 
 3. **Clonar o projeto**
