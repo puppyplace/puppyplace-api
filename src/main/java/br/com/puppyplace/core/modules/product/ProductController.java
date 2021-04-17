@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.puppyplace.core.modules.product.dto.ProductDTO;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/product")
 @Validated
+@Slf4j
 public class ProductController {
 
 	@Autowired
@@ -33,8 +35,11 @@ public class ProductController {
 	
 	@PostMapping
 	public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO productDTO){
-		var productDTOCreated = productService.create(productDTO);
-		return ResponseEntity.status(HttpStatus.CREATED).body(productDTOCreated);
+		log.info(">>> [POST] A new product to create received. RequestBody: {}", productDTO);
+		var product = productService.create(productDTO);
+		log.info(">>> Response: {}", product);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(product);
 	}
 
 	@GetMapping
@@ -43,27 +48,41 @@ public class ProductController {
 		@RequestParam(value = "page", defaultValue = "0") Integer page){
 		var pageable = PageRequest.of(page, size);
 		
+		log.info(">>> [GET] A new request to get list of products in page {} with size {}", page, size);
 		var pageOfProductsDTO = productService.list(pageable);
+		log.info(">>> Response: {}", pageOfProductsDTO);
 
 		return ResponseEntity.ok(pageOfProductsDTO);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductDTO> get(@PathVariable("id") UUID id){
+
+		log.info(">>> [GET] A new request to get product with ID {}", id);
 		var productDTO = productService.get(id);
+		log.info(">>> Response: {}", productDTO);
+
 		return ResponseEntity.ok(productDTO);
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable("id") UUID id){
+
+		log.info(">>> [PUT] A new request to get product with ID {}", id);
 		var productDTOUpdated = productService.update(productDTO, id);
+		log.info(">>> Response: {}", productDTOUpdated);
+
 		return ResponseEntity.ok(productDTOUpdated);
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable("id") UUID id) {
+
+		log.info(">>> [DELETE] A new request to delete product with ID {}", id);
 		productService.delete(id);
+		log.info(">>> Product deleted! No response.");
+		
 	}
 	
 }

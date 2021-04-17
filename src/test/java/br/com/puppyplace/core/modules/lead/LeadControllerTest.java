@@ -50,7 +50,7 @@ public class LeadControllerTest {
 	void shouldReturnSuccess_WhenSendANewCorrectLead() throws Exception {
 		//given
 		var leadDTO = easyRandom.nextObject(LeadDTO.class);
-		when(leadService.createLead(any(LeadDTO.class))).thenReturn(leadDTO);
+		when(leadService.create(any(LeadDTO.class))).thenReturn(leadDTO);
 
 		//when
 		httpRequest.perform(post("/lead").contentType("application/json").content(mapper.writeValueAsString(leadDTO)))
@@ -59,7 +59,7 @@ public class LeadControllerTest {
 				.andExpect(jsonPath("email").value(leadDTO.getEmail()));
 		
 		// then
-		verify(leadService, times(1)).createLead(leadDTO);
+		verify(leadService, times(1)).create(leadDTO);
 	}
 
     @Test
@@ -67,7 +67,7 @@ public class LeadControllerTest {
     	//given
         var leadDTO = easyRandom.nextObject(LeadDTO.class);
         leadDTO.setEmail("invalid");        
-        when(leadService.createLead(any(LeadDTO.class))).thenReturn(leadDTO);
+        when(leadService.create(any(LeadDTO.class))).thenReturn(leadDTO);
 
         //when
         httpRequest.perform(post("/lead")
@@ -76,7 +76,7 @@ public class LeadControllerTest {
             .andExpect(status().isBadRequest());                
 
 		// then
-		verify(leadService, times(0)).createLead(any(LeadDTO.class));
+		verify(leadService, times(0)).create(any(LeadDTO.class));
     }
     
     @Test
@@ -84,7 +84,7 @@ public class LeadControllerTest {
     	//given
         var leadDTO = easyRandom.nextObject(LeadDTO.class);
         leadDTO.setName("");
-        when(leadService.createLead(any(LeadDTO.class))).thenReturn(leadDTO);
+        when(leadService.create(any(LeadDTO.class))).thenReturn(leadDTO);
 
         //when
         httpRequest.perform(post("/lead")
@@ -93,6 +93,6 @@ public class LeadControllerTest {
             .andExpect(status().isBadRequest());                
 
 		// then
-		verify(leadService, times(0)).createLead(any(LeadDTO.class));
+		verify(leadService, times(0)).create(any(LeadDTO.class));
     }
 }

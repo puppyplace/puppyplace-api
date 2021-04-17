@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class Partner extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

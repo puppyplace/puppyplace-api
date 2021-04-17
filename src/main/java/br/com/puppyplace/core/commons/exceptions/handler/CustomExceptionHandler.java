@@ -12,20 +12,18 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.EmailUnavailableException;
-import br.com.puppyplace.core.commons.exceptions.ErrorModel;
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
+import br.com.puppyplace.core.commons.exceptions.dto.ErrorDTO;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Override
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		List<String> errors = new ArrayList<>();
@@ -36,15 +34,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 			errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
 		}
 
-		var body = ErrorModel.builder().messages(errors).statusCode(HttpStatus.BAD_REQUEST.toString()).build();
+		var body = ErrorDTO.builder().messages(errors).statusCode(HttpStatus.BAD_REQUEST.toString()).build();
 
 		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler({EmailUnavailableException.class, ResourceNotFoundException.class, BusinessException.class})
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ErrorModel> handleRegraDeNegocioException(RuntimeException ex) {
-		var erroBody = ErrorModel.builder().message(ex.getMessage()).statusCode(HttpStatus.BAD_REQUEST.toString())
+	public ResponseEntity<ErrorDTO> handleRegraDeNegocioException(RuntimeException ex) {
+		var erroBody = ErrorDTO.builder().message(ex.getMessage()).statusCode(HttpStatus.BAD_REQUEST.toString())
 				.build();
 
 		return new ResponseEntity<>(erroBody, HttpStatus.BAD_REQUEST);
@@ -53,7 +50,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-				var erroBody = ErrorModel.builder().message(ex.getMessage()).statusCode(HttpStatus.BAD_REQUEST.toString())
+				var erroBody = ErrorDTO.builder().message(ex.getMessage()).statusCode(HttpStatus.BAD_REQUEST.toString())
 				.build();
 
 		return new ResponseEntity<>(erroBody, HttpStatus.BAD_REQUEST);

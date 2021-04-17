@@ -2,10 +2,10 @@ package br.com.puppyplace.core.modules.category;
 
 import java.util.UUID;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.puppyplace.core.entities.Category;
 
-public interface CategoryRepository extends CrudRepository<Category, UUID> {
+public interface CategoryRepository extends JpaRepository<Category, UUID> {
     
 }

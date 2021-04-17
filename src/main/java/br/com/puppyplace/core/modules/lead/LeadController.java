@@ -18,15 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 @Validated
 @Slf4j
 public class LeadController {
+
     @Autowired
     private LeadService leadService;
 
     @PostMapping
-    public ResponseEntity<LeadDTO> create(@Valid @RequestBody LeadDTO leadDTO){
-        log.info(">>> [POST] A new lead received. Request: {}", leadDTO);
-        var createdLead = this.leadService.createLead(leadDTO);
+    public ResponseEntity<LeadDTO> create(@Valid @RequestBody LeadDTO leadDTO){     
+           
+        log.info(">>> [POST] A new lead received. RequestBody: {}", leadDTO);
+        leadDTO = this.leadService.create(leadDTO);
+        log.info(">>> Response: {}", leadDTO);
 
-        log.info(">>> Response: {}", createdLead);
-        return ResponseEntity.ok(createdLead);
+        return ResponseEntity.ok(leadDTO);
     }
+    
 }

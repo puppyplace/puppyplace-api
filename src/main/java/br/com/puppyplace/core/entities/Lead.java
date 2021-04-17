@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Builder
@@ -21,7 +20,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@ToString
 public class Lead extends AbstractEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

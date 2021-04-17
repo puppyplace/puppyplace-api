@@ -6,37 +6,25 @@ import java.util.UUID;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import br.com.puppyplace.core.entities.Lead;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class LeadDTO implements Serializable {
 
-	private static final long serialVersionUID;
-	
-	static {
-		serialVersionUID = -451193093349710026L;
-	}
+	private static final long serialVersionUID = -451193093349710026L;
 	
 	private UUID id;
     
-    @NotEmpty
+    @NotEmpty(message = "Name could'nt be empty")
     private String name;
     
-    @Email(message = "O e-mail deve ser válido")
+    @Email(message = "It should be a valid email")
     private String email;
-
-    public LeadDTO(Lead lead) {
-        this.id = lead.getId();
-        this.name = lead.getName();
-        this.email = lead.getEmail();
-    }
+    
 }

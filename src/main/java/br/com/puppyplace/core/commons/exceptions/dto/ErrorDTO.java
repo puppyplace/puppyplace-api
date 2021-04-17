@@ -1,4 +1,4 @@
-package br.com.puppyplace.core.commons.exceptions;
+package br.com.puppyplace.core.commons.exceptions.dto;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -15,7 +15,7 @@ import lombok.Data;
 @Builder
 @JsonPropertyOrder({ "error", "status_code", "message", "messages" })
 @JsonInclude(Include.NON_NULL)
-public class ErrorModel implements Serializable {
+public class ErrorDTO implements Serializable {
 
 	private static final long serialVersionUID = -9054193687126443791L;
 

@@ -2,10 +2,12 @@ package br.com.puppyplace.core.modules.product;
 
 import java.util.UUID;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import br.com.puppyplace.core.entities.Product;
 
-public interface ProductRepository extends PagingAndSortingRepository<Product, UUID>{
+@Repository
+public interface ProductRepository extends JpaRepository<Product, UUID>{
     
 }

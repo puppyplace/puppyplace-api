@@ -10,11 +10,14 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 
 import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import br.com.puppyplace.core.commons.exceptions.EmailUnavailableException;
 import br.com.puppyplace.core.entities.Lead;
@@ -31,6 +34,11 @@ public class LeadServiceImplTest {
     LeadRepository leadRepository;
     
     EasyRandom easyRandom = new EasyRandom();
+    
+    @BeforeEach
+    void init() {
+    	ReflectionTestUtils.setField(leadService, "mapper", new ModelMapper());
+    }
 
     @Test
     void shouldSucceeded_WhenSendANewLeadDTO(){
@@ -40,7 +48,7 @@ public class LeadServiceImplTest {
         when(leadRepository.save(any(Lead.class))).thenReturn(getLeadSaved(leadDTO));
         
         //when
-        var leadCreated = leadService.createLead(leadDTO);
+        var leadCreated = leadService.create(leadDTO);
 
         //then
         verify(leadRepository, times(1)).save(any(Lead.class));
@@ -57,7 +65,7 @@ public class LeadServiceImplTest {
         
         //then
         assertThrows(EmailUnavailableException.class, () -> {
-        	leadService.createLead(leadDTO);
+        	leadService.create(leadDTO);
         });
 
         verify(leadRepository, times(0)).save(any(Lead.class));
