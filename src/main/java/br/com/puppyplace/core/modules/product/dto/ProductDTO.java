@@ -57,7 +57,6 @@ public class ProductDTO implements Serializable {
     @NotEmpty
     private String unit;
 
-    @NotEmpty
     @JsonProperty("product_code")
     private String productCode;
 

@@ -3,6 +3,7 @@ package br.com.puppyplace.core.modules.product;
 import java.util.UUID;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.puppyplace.core.modules.product.dto.ProductDTO;
+import br.com.puppyplace.core.modules.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -44,8 +46,8 @@ public class ProductController {
 
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> list(
-		@RequestParam(value = "size", defaultValue = "10") Integer size,
-		@RequestParam(value = "page", defaultValue = "0") Integer page){
+		@Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
+		@Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page){
 		var pageable = PageRequest.of(page, size);
 		
 		log.info(">>> [GET] A new request to get list of products in page {} with size {}", page, size);
@@ -57,12 +59,11 @@ public class ProductController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductDTO> get(@PathVariable("id") UUID id){
-
 		log.info(">>> [GET] A new request to get product with ID {}", id);
 		var productDTO = productService.get(id);
 		log.info(">>> Response: {}", productDTO);
 
-		return ResponseEntity.ok(productDTO);
+		return ResponseEntity.ok(productDTO); 
 	}
 	
 	@PutMapping("/{id}")

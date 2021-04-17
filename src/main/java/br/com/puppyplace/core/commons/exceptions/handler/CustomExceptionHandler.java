@@ -2,6 +2,11 @@ package br.com.puppyplace.core.commons.exceptions.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.puppyplace.core.commons.exceptions.BusinessException;
@@ -22,6 +28,36 @@ import br.com.puppyplace.core.commons.exceptions.dto.ErrorDTO;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<ErrorDTO> handleConstraintViolationException(ConstraintViolationException ex) {
+
+		Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+		var messages = constraintViolations.stream().map(c -> {
+			var sb = new StringBuilder();
+			sb.append(c.getPropertyPath());
+			sb.append(" ");
+			sb.append(c.getMessage());
+			return sb.toString();
+		}).collect(Collectors.toList());
+		var body = ErrorDTO.builder().messages(messages).statusCode(HttpStatus.BAD_REQUEST.toString()).build();
+
+		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ErrorDTO> handleMethodArgumentTypeMismatchException(
+			MethodArgumentTypeMismatchException ex) {
+
+		var sb = new StringBuilder();
+			sb.append(ex.getName());
+			sb.append(" should be of type ");
+			sb.append(ex.getRequiredType().getSimpleName());
+
+		var body = ErrorDTO.builder().message(sb.toString()).statusCode(HttpStatus.BAD_REQUEST.toString()).build();
+
+		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

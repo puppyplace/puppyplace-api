@@ -28,15 +28,16 @@ import br.com.puppyplace.core.modules.lead.dto.LeadDTO;
 @ExtendWith(SpringExtension.class)
 public class LeadServiceImplTest {
     @InjectMocks
-    LeadServiceImpl leadService;    
+    private LeadServiceImpl leadService;    
 
     @Mock
-    LeadRepository leadRepository;
+    private LeadRepository leadRepository;
     
-    EasyRandom easyRandom = new EasyRandom();
+    private EasyRandom easyRandom;
     
     @BeforeEach
     void init() {
+        this.easyRandom = new EasyRandom();
     	ReflectionTestUtils.setField(leadService, "mapper", new ModelMapper());
     }
 

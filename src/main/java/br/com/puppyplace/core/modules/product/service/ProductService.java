@@ -1,4 +1,4 @@
-package br.com.puppyplace.core.modules.product;
+package br.com.puppyplace.core.modules.product.service;
 
 import java.util.UUID;
 
