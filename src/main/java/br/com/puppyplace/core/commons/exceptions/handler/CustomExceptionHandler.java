@@ -49,10 +49,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<ErrorDTO> handleMethodArgumentTypeMismatchException(
 			MethodArgumentTypeMismatchException ex) {
 
+		var requiredType = ex.getRequiredType();
+		var simpleName = requiredType != null ? requiredType.getSimpleName() : "";
+
 		var sb = new StringBuilder();
 			sb.append(ex.getName());
 			sb.append(" should be of type ");
-			sb.append(ex.getRequiredType().getSimpleName());
+			sb.append(simpleName);
 
 		var body = ErrorDTO.builder().message(sb.toString()).statusCode(HttpStatus.BAD_REQUEST.toString()).build();
 
