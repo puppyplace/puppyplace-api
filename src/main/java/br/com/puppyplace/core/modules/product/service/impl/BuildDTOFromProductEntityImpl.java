@@ -3,9 +3,9 @@ package br.com.puppyplace.core.modules.product.service.impl;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.puppyplace.core.entities.Category;
 import br.com.puppyplace.core.entities.Product;
 import br.com.puppyplace.core.modules.product.dto.ProductDTO;
 import br.com.puppyplace.core.modules.product.service.BuildDTOFromProductEntity;
@@ -25,7 +25,7 @@ public class BuildDTOFromProductEntityImpl implements BuildDTOFromProductEntity 
 
         productDTO.setIdCategories(
             product.getCategories().stream()
-            .map(c -> c.getId())
+            .map(Category::getId)
             .collect(Collectors.toList()));
 
         log.info(">>> Done");

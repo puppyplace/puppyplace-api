@@ -3,7 +3,6 @@ package br.com.puppyplace.core.modules.product.service.impl;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.puppyplace.core.entities.Category;

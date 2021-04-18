@@ -67,7 +67,7 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script:
-    - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true -Dmaven.test.skip=true
+    - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
   allow_failure: true
   only:
     - master
