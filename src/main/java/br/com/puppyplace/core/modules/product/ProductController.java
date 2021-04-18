@@ -67,7 +67,7 @@ public class ProductController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable("id") UUID id){
+	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable("id") UUID id){
 
 		log.info(">>> [PUT] A new request to get product with ID {}", id);
 		var productDTOUpdated = productService.update(productDTO, id);

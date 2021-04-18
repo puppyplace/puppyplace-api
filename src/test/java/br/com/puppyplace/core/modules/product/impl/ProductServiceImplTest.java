@@ -41,7 +41,7 @@ import br.com.puppyplace.core.modules.product.service.impl.ProductServiceImpl;
 
 @ExtendWith(SpringExtension.class)
 @Import(AppConfig.class)
-public class ProductServiceImplTest {
+class ProductServiceImplTest {
     
     @InjectMocks
     private ProductServiceImpl productService;

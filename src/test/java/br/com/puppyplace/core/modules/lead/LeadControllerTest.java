@@ -27,7 +27,7 @@ import br.com.puppyplace.core.modules.lead.dto.LeadDTO;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = LeadController.class)
-public class LeadControllerTest {
+class LeadControllerTest {
 	@Autowired
 	private MockMvc httpRequest;
 

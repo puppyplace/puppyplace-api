@@ -59,12 +59,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductDTO update(ProductDTO productDTO, UUID id) {
-        try {
-            var product = this.findOne(id);
-
+        try {  
             log.info(">>> Starting update entity");
 
-            product = buildProductFromDTO.execute(productDTO);
+            this.findOne(id);
+            var product = buildProductFromDTO.execute(productDTO);
+            product.setId(id);
+
             productRepository.save(product);
 
             log.info(">>> Entity persisted!");
