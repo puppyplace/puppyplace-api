@@ -26,7 +26,7 @@ import br.com.puppyplace.core.modules.lead.dto.LeadDTO;
 
 
 @ExtendWith(SpringExtension.class)
-public class LeadServiceImplTest {
+class LeadServiceImplTest {
     @InjectMocks
     private LeadServiceImpl leadService;    
 
