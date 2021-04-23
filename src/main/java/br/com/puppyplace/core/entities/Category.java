@@ -1,5 +1,6 @@
 package br.com.puppyplace.core.entities;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +38,15 @@ public class Category extends AbstractEntity {
 
     @Column
     private String name;
+    
+    @ColumnDefault("false")
+    @Column(name = "deleted")
+    private boolean deleted;
+
+    @Column(name = "deleted_at")
+	protected Date deletedAt;
+    
+    
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
     private List<Product> products;
