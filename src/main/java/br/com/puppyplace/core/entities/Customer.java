@@ -42,7 +42,7 @@ public class Customer extends AbstractEntity{
     private String cellphone;
 
     @Column(nullable = false)
-    private LocalDate birthDate; // validate birthdate <18 yo
+    private LocalDate birthDate;
 
     @Column(nullable = false)
     private String password; // todo: criptografar
