@@ -46,8 +46,6 @@ public class Category extends AbstractEntity {
     @Column(name = "deleted_at")
 	protected Date deletedAt;
     
-    
-
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
     private List<Product> products;
 
