@@ -28,7 +28,7 @@ import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = CustomerController.class)
-class CustomerControlerTest {
+class CustomerControllerTest {
     @Autowired
     private MockMvc httpRequest;
 
@@ -89,6 +89,7 @@ class CustomerControlerTest {
 
     @Test
     void shouldReturnError_whenSendACustomerWithAFutureBirthdDate() throws Exception {
+        invalidCustomerDTO.setBirthDate(LocalDate.of(2050, 12, 01));
         // when
         httpRequest.perform(post("/customer").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(invalidCustomerDTO)))
