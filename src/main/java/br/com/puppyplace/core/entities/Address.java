@@ -1,5 +1,6 @@
 package br.com.puppyplace.core.entities;
 
+import br.com.puppyplace.core.commons.enums.StateEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Address extends AbstractEntity{
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "id_customer")
     private Customer customer;
 
     @Column
@@ -33,5 +35,5 @@ public class Address extends AbstractEntity{
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Enum state;
+    private StateEnum state;
 }
