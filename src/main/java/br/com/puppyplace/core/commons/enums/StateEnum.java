@@ -1,3 +1,5 @@
+package br.com.puppyplace.core.commons.enums;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
