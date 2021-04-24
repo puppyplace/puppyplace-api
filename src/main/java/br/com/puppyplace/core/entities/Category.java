@@ -36,7 +36,7 @@ public class Category extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column
+    @Column (unique = true)
     private String name;
     
     @ColumnDefault("false")

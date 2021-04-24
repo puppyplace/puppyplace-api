@@ -72,6 +72,7 @@ public class CategoryController {
 
 		log.info(">>> [PUT] A new request to get product with ID {}", id);
 		dto = service.update(dto, id);
+		dto.setId(id);
 		log.info(">>> Response: {}", dto);
 
 		return ResponseEntity.ok(dto);
