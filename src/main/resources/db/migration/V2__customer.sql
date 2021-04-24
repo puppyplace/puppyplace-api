@@ -4,7 +4,7 @@ CREATE TABLE public.customer (
 	updated_at timestamp NULL,
 	"name" varchar(255) NULL,
 	"email" varchar(255) NULL,
-	"document" varchar(255) NULL,
+	"document" varchar(255) NULL UNIQUE,
 	CONSTRAINT customer_pkey PRIMARY KEY (id)
 );
 
