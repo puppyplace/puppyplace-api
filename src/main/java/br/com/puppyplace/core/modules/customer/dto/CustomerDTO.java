@@ -2,6 +2,7 @@ package br.com.puppyplace.core.modules.customer.dto;
 
 import br.com.puppyplace.core.entities.Address;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,6 +51,7 @@ public class CustomerDTO implements Serializable {
     private LocalDate birthDate;
 
     @NotEmpty
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private boolean active;
