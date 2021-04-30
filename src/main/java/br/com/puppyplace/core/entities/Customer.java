@@ -1,19 +1,15 @@
 package br.com.puppyplace.core.entities;
 
-import javax.persistence.*;
-
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 
 
 @Entity
@@ -21,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 public class Customer extends AbstractEntity{
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -42,14 +37,12 @@ public class Customer extends AbstractEntity{
     private String cellphone;
 
     @Column(nullable = false)
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
     @Column(nullable = false)
-    private String password; // todo: criptografar
+    private String password;
 
     @ColumnDefault("true")
     @Column(name = "active")
     private boolean active;
-
-
 }
