@@ -29,7 +29,13 @@ public class Address extends AbstractEntity{
     private String number;
 
     @Column
+    private String complement;
+
+    @Column
     private String zipcode;
+
+    @Column
+    private String city;
 
     @Column
     @Enumerated(EnumType.STRING)

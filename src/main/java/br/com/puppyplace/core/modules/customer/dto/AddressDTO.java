@@ -26,7 +26,13 @@ public class AddressDTO implements Serializable {
     private String number;
 
     @NotEmpty
+    private String complement;
+
+    @NotEmpty
     private String zipcode;
+
+    @NotEmpty
+    private String city;
 
     @NotEmpty
     private StateEnum state;
