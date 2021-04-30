@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -50,7 +49,6 @@ public class CustomerServiceImpl implements CustomerService {
         var customer = mapper.map(customerDTO, Customer.class);
         customer.setCreatedAt(new Date());
         customer.setUpdatedAt(new Date());
-        customer.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
 
         customerRepository.save(customer);
         customerDTO.setId(customer.getId());
