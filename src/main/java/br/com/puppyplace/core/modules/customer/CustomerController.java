@@ -1,19 +1,16 @@
 package br.com.puppyplace.core.modules.customer;
 
-import br.com.puppyplace.core.entities.Customer;
-import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import br.com.puppyplace.core.modules.customer.dto.CustomerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import br.com.puppyplace.core.modules.customer.dto.CustomerDTO;
+import java.util.UUID;
 @RestController
 @RequestMapping("/customer")
 @Validated
@@ -23,8 +20,12 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping
     public ResponseEntity<CustomerDTO> create(@Valid @RequestBody CustomerDTO customerDTO){
+//        customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         log.info(">>> [POST] A new customer received. RequestBody: {}", customerDTO);
         var customer = customerService.create(customerDTO);
         log.info(">>> Response: {}", customer);
