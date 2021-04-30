@@ -4,7 +4,6 @@ import br.com.puppyplace.core.commons.enums.StateEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -15,7 +14,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Address extends AbstractEntity{
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
