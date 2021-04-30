@@ -1,14 +1,5 @@
 package br.com.puppyplace.core.modules.customer;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import br.com.puppyplace.core.entities.Customer;
 import br.com.puppyplace.core.modules.customer.dto.CustomerDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jeasy.random.EasyRandom;
@@ -20,11 +11,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.UUID;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = CustomerController.class)
@@ -38,6 +36,9 @@ class CustomerControllerTest {
     @MockBean
     private CustomerService customerService;
 
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
     private EasyRandom easyRandom;
     private CustomerDTO customerDTO;
     private CustomerDTO invalidCustomerDTO;
@@ -46,14 +47,18 @@ class CustomerControllerTest {
     void init(){
         this.easyRandom = new EasyRandom();
         this.customerDTO = easyRandom.nextObject(CustomerDTO.class);
-        this.customerDTO.setBirthDate(LocalDate.of(2000, 12, 01));
+        this.customerDTO.setEmail("fulano@email.com");
+        this.customerDTO.setPassword("1234567890");
+        this.customerDTO.setBirthdate(LocalDate.of(2000, 12, 01));
+
         this.invalidCustomerDTO = CustomerDTO.builder()
                                     .name("")
                                     .email("")
                                     .document("")
                                     .cellphone("")
-                                    .birthDate(LocalDate.now())
+                                    .birthdate(LocalDate.now())
                                     .password("")
+//                                    .addresses(null)
                                     .build();
     }
 
@@ -63,20 +68,22 @@ class CustomerControllerTest {
         when(customerService.create(any(CustomerDTO.class))).thenReturn(customerDTO);
 
         // when
-        httpRequest.perform(post("/product").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(customerDTO)))
+        httpRequest.perform(post("/customer").contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(customerDTO)))
                 .andExpect(status().isCreated()).andExpect(jsonPath("id").value(customerDTO.getId().toString()))
                 .andExpect(jsonPath("name").value(customerDTO.getName()))
                 .andExpect(jsonPath("document").value(customerDTO.getDocument()))
                 .andExpect(jsonPath("email").value(customerDTO.getEmail()))
                 .andExpect(jsonPath("cellphone").value(customerDTO.getCellphone()))
-                .andExpect(jsonPath("birthdate").value(customerDTO.getBirthDate()));
+                .andExpect(jsonPath("birthdate").value(customerDTO.getBirthdate().toString()))
+                .andExpect(jsonPath("password").value(customerDTO.getPassword().toString()));
         // then
         verify(customerService, times(1)).create(customerDTO);
     }
 
     @Test
     void shouldReturnError_whenSendAInvalidCustomerToCreate() throws Exception {
-        customerDTO.setBirthDate(LocalDate.of(2050, 12, 01));
+        customerDTO.setBirthdate(LocalDate.of(2050, 12, 01));
         // when
         httpRequest.perform(post("/customer").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(customerDTO)))
@@ -89,15 +96,15 @@ class CustomerControllerTest {
 
     @Test
     void shouldReturnError_whenSendACustomerWithAFutureBirthdDate() throws Exception {
-        invalidCustomerDTO.setBirthDate(LocalDate.of(2050, 12, 01));
+        customerDTO.setBirthdate(LocalDate.of(2050, 12, 01));
         // when
         httpRequest.perform(post("/customer").contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(invalidCustomerDTO)))
+                .content(mapper.writeValueAsString(customerDTO)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
                 .andExpect(jsonPath("messages").isNotEmpty()).andExpect(jsonPath("messages").isArray());
         // then
-        verify(customerService, times(0)).create(invalidCustomerDTO);
+        verify(customerService, times(0)).create(customerDTO);
     }
 
     @Test
@@ -113,7 +120,7 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("document").value(customerDTO.getDocument()))
                 .andExpect(jsonPath("email").value(customerDTO.getEmail()))
                 .andExpect(jsonPath("cellphone").value(customerDTO.getCellphone()))
-                .andExpect(jsonPath("birthdate").value(customerDTO.getBirthDate().toString()));
+                .andExpect(jsonPath("birthdate").value(customerDTO.getBirthdate().toString()));
         // then
         verify(customerService, times(1)).update(any(CustomerDTO.class), any(UUID.class));
     }

@@ -14,13 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,10 +42,10 @@ public class CustomerServiceImplTest {
     void init(){
         this.easyRandom = new EasyRandom();
         this.customerDTO = easyRandom.nextObject(CustomerDTO.class);
-        this.customerDTO.setBirthDate(LocalDate.of(2000, 12, 01));
+        this.customerDTO.setBirthdate(LocalDate.of(2000, 12, 01));
 
         this.customer = easyRandom.nextObject(Customer.class);
-        this.customer.setBirthDate(LocalDate.of(2000, 12, 01));
+        this.customer.setBirthdate(LocalDate.of(2000, 12, 01));
         this.customerID = UUID.randomUUID();
 
         ReflectionTestUtils.setField(customerService, "mapper", new ModelMapper());
@@ -70,7 +68,7 @@ public class CustomerServiceImplTest {
         assertEquals(customerDTO.getEmail(), customerDTOPersisted.getEmail());
         assertEquals(customerDTO.getDocument(), customerDTOPersisted.getDocument());
         assertEquals(customerDTO.getCellphone(), customerDTOPersisted.getCellphone());
-        assertEquals(customerDTO.getBirthDate(), customerDTOPersisted.getBirthDate());
+        assertEquals(customerDTO.getBirthdate(), customerDTOPersisted.getBirthdate());
 
         verify(customerRepository, times(1)).save(any(Customer.class));
     }
@@ -78,7 +76,7 @@ public class CustomerServiceImplTest {
     @Test
     void shouldReturnError_whenCreateANewCustomerWithLessEighteenYearsOld(){
         // given
-        customerDTO.setBirthDate(LocalDate.now().minusYears(17));
+        customerDTO.setBirthdate(LocalDate.now().minusYears(17));
         // then
         assertThrows(BusinessException.class, () -> {
             customerService.create(customerDTO);
@@ -115,7 +113,7 @@ public class CustomerServiceImplTest {
         assertEquals(customerDTO.getEmail(), customerDTOPersisted.getEmail());
         assertEquals(customerDTO.getDocument(), customerDTOPersisted.getDocument());
         assertEquals(customerDTO.getCellphone(), customerDTOPersisted.getCellphone());
-        assertEquals(customerDTO.getBirthDate(), customerDTOPersisted.getBirthDate());
+        assertEquals(customerDTO.getBirthdate(), customerDTOPersisted.getBirthdate());
 
         verify(customerRepository, times(1)).save(any(Customer.class));
         verify(customerRepository, times(1)).findById(any(UUID.class));

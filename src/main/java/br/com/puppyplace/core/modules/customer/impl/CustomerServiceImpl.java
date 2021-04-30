@@ -25,15 +25,12 @@ public class CustomerServiceImpl implements CustomerService {
     private ModelMapper mapper;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private CustomerRepository customerRepository;
 
     @Override
     public CustomerDTO create(CustomerDTO customerDTO) {
         var referenceDate = LocalDate.now();
-        var birthday = customerDTO.getBirthDate();
+        var birthday = customerDTO.getBirthdate();
         var period = Period.between(birthday, referenceDate).getYears();
 
         if (period < 18) {
