@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import br.com.puppyplace.core.commons.exceptions.ResourceAlreadyInUseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +79,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler({EmailUnavailableException.class, ResourceNotFoundException.class, BusinessException.class})
+	@ExceptionHandler({EmailUnavailableException.class, ResourceNotFoundException.class, BusinessException.class, ResourceAlreadyInUseException.class})
 	public ResponseEntity<ErrorDTO> handleRegraDeNegocioException(RuntimeException ex) {
 		var erroBody = ErrorDTO.builder().message(ex.getMessage()).statusCode(HttpStatus.BAD_REQUEST.toString())
 				.build();
