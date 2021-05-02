@@ -1,28 +1,21 @@
 package br.com.puppyplace.core.modules.category.impl;
 
-import java.util.Date;
-import java.util.UUID;
-
-import javax.validation.Valid;
-
-import org.modelmapper.ModelMapper;
+import br.com.puppyplace.core.commons.exceptions.BusinessException;
+import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
+import br.com.puppyplace.core.entities.Category;
+import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
+import br.com.puppyplace.core.modules.category.repository.CategoryRepository;
+import br.com.puppyplace.core.modules.category.service.BuildCategoryFromDTO;
+import br.com.puppyplace.core.modules.category.service.BuildDTOFromCategoryEntity;
+import br.com.puppyplace.core.modules.category.service.CategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import br.com.puppyplace.core.commons.exceptions.BusinessException;
-import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
-
-
-import br.com.puppyplace.core.entities.Category;
-import br.com.puppyplace.core.modules.category.repository.CategoryRepository;
-import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
-import br.com.puppyplace.core.modules.category.service.BuildCategoryFromDTO;
-import br.com.puppyplace.core.modules.category.service.BuildDTOFromCategoryEntity;
-import br.com.puppyplace.core.modules.category.service.CategoryService;
-import lombok.extern.slf4j.Slf4j;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -66,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService{
 			return dto;
 		} catch (DataIntegrityViolationException e) {
 			log.error(">>> An exception occurred! {}", e.getMessage());
-			throw new BusinessException("A business exception ocurred. Please verify the values of request body.");
+			throw new BusinessException("A business exception occurred. Please verify the values of request body.");
 		}
 	}
 
@@ -78,7 +71,6 @@ public class CategoryServiceImpl implements CategoryService{
 		//product.setDeletedAt(new Date());
 		//categoryRepository.save(product);
 		categoryRepository.delete(product);
-
 	}
 
 	private Category findOne(UUID id) {
@@ -92,7 +84,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public Page<CategoryDTO> list(PageRequest pageable) {
-		log.info(">>> Searching products listt from database");
+		log.info(">>> Searching category list from database");
 
 		var pageOfProducts = categoryRepository.findAll(pageable);
 		var pageOfProductsDTO = pageOfProducts.map(product -> buildDTOFromCategoryEntity.execute(product));
@@ -105,7 +97,4 @@ public class CategoryServiceImpl implements CategoryService{
 	public CategoryDTO get(UUID id) {
 		return buildDTOFromCategoryEntity.execute(this.findOne(id));
 	}
-    
-    
-    
 }

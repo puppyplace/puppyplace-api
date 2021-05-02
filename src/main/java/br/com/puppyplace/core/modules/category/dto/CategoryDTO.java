@@ -1,14 +1,13 @@
 package br.com.puppyplace.core.modules.category.dto;
 
-import java.io.Serializable;
-import java.util.UUID;
-
-import javax.validation.constraints.NotEmpty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +18,6 @@ public class CategoryDTO implements Serializable {
 
     private UUID id;
 
-    @NotEmpty(message = "Name could'nt be empty")
+    @NotEmpty(message = "Name couldn't be empty")
     private String name;    
 }
