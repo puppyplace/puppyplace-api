@@ -1,22 +1,8 @@
 package br.com.puppyplace.core.modules.product;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
+import br.com.puppyplace.core.modules.product.dto.ProductDTO;
+import br.com.puppyplace.core.modules.product.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,8 +19,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import br.com.puppyplace.core.modules.product.dto.ProductDTO;
-import br.com.puppyplace.core.modules.product.service.ProductService;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = ProductController.class)
@@ -127,7 +120,7 @@ class ProductControllerTest {
 	}
 
 	@Test
-	void shouldReturnSuccess_WhenGetUserWithValidID() throws Exception{
+	void shouldReturnSuccess_WhenGetProductWithValidID() throws Exception{
 		// given	
 		when(productService.get(any(UUID.class))).thenReturn(productDTO);
 
@@ -146,7 +139,7 @@ class ProductControllerTest {
 	}
 
 	@Test
-	void shouldReturnError_WhenGetUserWithoutID() throws Exception{
+	void shouldReturnError_WhenGetProductWithoutID() throws Exception{
 		// when
 		httpRequest.perform(get("/product/{id}", "10").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isBadRequest())
