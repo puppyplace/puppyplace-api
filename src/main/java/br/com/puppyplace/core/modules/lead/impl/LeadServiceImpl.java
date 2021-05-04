@@ -11,6 +11,8 @@ import br.com.puppyplace.core.modules.lead.LeadService;
 import br.com.puppyplace.core.modules.lead.dto.LeadDTO;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
+
 @Service
 @Slf4j
 public class LeadServiceImpl implements LeadService {
@@ -29,7 +31,8 @@ public class LeadServiceImpl implements LeadService {
                 .name(leadDTO.getName())
                 .email(leadDTO.getEmail())
                 .build();
-
+        lead.setCreatedAt(new Date());
+        lead.setUpdatedAt(new Date());
         lead = leadRepository.save(lead);
         leadDTO = mapper.map(lead, LeadDTO.class); 
 
