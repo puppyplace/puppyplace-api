@@ -76,10 +76,12 @@ public class CustomerServiceImpl implements CustomerService {
     public void delete(UUID id) {
         log.info(">>> Get customer to delete.");
 
+        // TODO: if customer has orders, the customer can not be deleted;
         var customer = this.findOne(id);
-        customer.setActive(Boolean.FALSE);
-        customer.setUpdatedAt(new Date());
-        customerRepository.save(customer);
+//        customer.setActive(Boolean.FALSE);
+//        customer.setUpdatedAt(new Date());
+//        customerRepository.save(customer);
+        customerRepository.delete(customer);
     }
 
     private Customer findOne(UUID id){
