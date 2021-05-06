@@ -140,15 +140,13 @@ public class CustomerServiceImplTest {
         //given
         customer.setActive(Boolean.TRUE);
         when(customerRepository.findById(customerID)).thenReturn(Optional.of(customer));
-        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         //when
         customerService.delete(customerID);
 
         //then
-        verify(customerRepository, times(1)).save(any(Customer.class));
+        verify(customerRepository, times(1)).delete(any(Customer.class));
         var argument = ArgumentCaptor.forClass(Customer.class);
-        verify(customerRepository).save(argument.capture());
-        assertFalse(argument.getValue().isActive());
+        verify(customerRepository).delete(argument.capture());
     }
 }
