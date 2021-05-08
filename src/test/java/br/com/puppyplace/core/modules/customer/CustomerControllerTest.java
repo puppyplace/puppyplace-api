@@ -49,6 +49,7 @@ class CustomerControllerTest {
         this.customerDTO = easyRandom.nextObject(CustomerDTO.class);
         this.customerDTO.setEmail("fulano@email.com");
         this.customerDTO.setPassword("1234567890");
+        this.customerDTO.setDocument("46797310016");
         this.customerDTO.setBirthdate(LocalDate.of(2000, 12, 01));
 
         this.invalidCustomerDTO = CustomerDTO.builder()
