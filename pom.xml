@@ -95,6 +95,11 @@
 			<artifactId>easy-random-randomizers</artifactId>
 			<version>5.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>br.com.caelum.stella</groupId>
+			<artifactId>caelum-stella-core</artifactId>
+			<version>2.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
