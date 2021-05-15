@@ -27,10 +27,10 @@ public class AddressServiceImpl implements AddressService {
     private CustomerRepository customerRepository;
 
     @Override
-    public AddressDTO create(UUID customer_id, AddressDTO addressDTO) {
-        var customer = customerRepository.findById(customer_id).orElseThrow(() -> {
-            log.error(">>> Customer not found with ID {}", customer_id);
-            throw new ResourceNotFoundException("No customer found with ID " + customer_id);
+    public AddressDTO create(UUID customerID, AddressDTO addressDTO) {
+        var customer = customerRepository.findById(customerID).orElseThrow(() -> {
+            log.error(">>> Customer not found with ID {}", customerID);
+            throw new ResourceNotFoundException("No customer found with ID " + customerID);
         });
 
         var address = mapper.map(addressDTO, Address.class);
