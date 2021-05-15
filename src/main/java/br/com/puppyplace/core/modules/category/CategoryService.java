@@ -2,6 +2,9 @@ package br.com.puppyplace.core.modules.category;
 
 import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
 
-public interface CategoryService {    
+import java.util.UUID;
+
+public interface CategoryService {
     public CategoryDTO create(CategoryDTO categoryDTO);
+    public CategoryDTO update(CategoryDTO categoryDTO, UUID id);
 }

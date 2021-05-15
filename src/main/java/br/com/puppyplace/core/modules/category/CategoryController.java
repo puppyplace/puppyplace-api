@@ -1,18 +1,15 @@
 package br.com.puppyplace.core.modules.category;
 
-import javax.validation.Valid;
-
+import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/category")
@@ -32,4 +29,12 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryDTO);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDTO> update(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable("id") UUID id){
+        log.info(">>> [PUT] A new request to get product with ID {}", id);
+        var categoryDTOUpdated = categoryService.update(categoryDTO, id);
+        log.info(">>> Response: {}", categoryDTOUpdated);
+
+        return ResponseEntity.ok(categoryDTOUpdated);
+    }
 }

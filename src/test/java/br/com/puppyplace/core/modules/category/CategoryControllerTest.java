@@ -14,9 +14,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,7 +63,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    void shoulReturnError_whenSendAInvalidCategoryToCreate() throws Exception {
+    void shouldReturnError_whenSendAInvalidCategoryToCreate() throws Exception {
         // when
         httpRequest
                 .perform(post("/category").contentType(MediaType.APPLICATION_JSON)
@@ -72,6 +75,38 @@ class CategoryControllerTest {
 
         // then
         verify(categoryService, times(0)).create(invalidCategoryDTO);
+    }
+
+    @Test
+    void shouldReturnSuccess_whenUpdateCategoryWithValidPayload() throws Exception {
+        // given
+        when(categoryService.update(any(CategoryDTO.class), any(UUID.class))).thenReturn(categoryDTO);
+
+        // when
+        httpRequest.perform(put("/category/{id}", UUID.randomUUID().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(categoryDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(categoryDTO.getId().toString()))
+                .andExpect(jsonPath("name").value(categoryDTO.getName()));
+
+        // then
+        verify(categoryService, times(1)).update(any(CategoryDTO.class), any(UUID.class));
+    }
+
+    @Test
+    void shouldReturnError_whenUpdateCategoryWithInvalidPayload() throws Exception {
+        // when
+        httpRequest.perform(put("/category/{id}", UUID.randomUUID().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(invalidCategoryDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
+                .andExpect(jsonPath("messages").isNotEmpty())
+                .andExpect(jsonPath("messages").isArray());
+
+        // then
+        verify(categoryService, times(0)).update(any(CategoryDTO.class), any(UUID.class));
     }
 
 }
