@@ -60,6 +60,15 @@ public class CategoryServiceImpl implements CategoryService{
         }
     }
 
+    public CategoryDTO get(UUID id){
+        log.info(">>> Building product DTO from product entity");
+        var category = this.findOne(id);
+        var categoryDTO = mapper.map(category, CategoryDTO.class);
+
+        log.info(">>> Done");
+        return categoryDTO;
+
+    }
     private Category findOne(UUID id){
         log.info(">>> Starting find category with ID {}", id);
 

@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -107,6 +108,33 @@ class CategoryControllerTest {
 
         // then
         verify(categoryService, times(0)).update(any(CategoryDTO.class), any(UUID.class));
+    }
+
+    @Test
+    void shouldReturnSuccess_whenGetCategoryWithAValidID() throws Exception {
+        // given
+        when(categoryService.get(any(UUID.class))).thenReturn(categoryDTO);
+
+        // when
+        httpRequest.perform(get("/category/{id}", UUID.randomUUID().toString()).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(categoryDTO.getId().toString()))
+                .andExpect(jsonPath("name").value(categoryDTO.getName()));
+
+        // then
+        verify(categoryService, times(1)).get(any(UUID.class));
+    }
+
+    @Test
+    void shouldReturnError_whenGetCategoryWithInvalidID() throws Exception {
+        // when
+        httpRequest.perform(get("/category/{id}", "10").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
+                .andExpect(jsonPath("message").isNotEmpty());
+
+        // then
+        verify(categoryService, times(0)).get(any(UUID.class));
     }
 
 }

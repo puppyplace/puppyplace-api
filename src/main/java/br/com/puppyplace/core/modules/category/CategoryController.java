@@ -37,4 +37,13 @@ public class CategoryController {
 
         return ResponseEntity.ok(categoryDTOUpdated);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDTO> get(@PathVariable("id") UUID id){
+        log.info(">>> [GET] A new request to get category by ID {}", id);
+        var categoryDTO = categoryService.get(id);
+        log.info(">>> Response: {}", categoryDTO);
+
+        return ResponseEntity.ok(categoryDTO);
+    }
 }
