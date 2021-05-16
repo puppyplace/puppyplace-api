@@ -8,4 +8,5 @@ public interface CategoryService {
     public CategoryDTO create(CategoryDTO categoryDTO);
     public CategoryDTO update(CategoryDTO categoryDTO, UUID id);
     public CategoryDTO get(UUID id);
+//    public Page<ProductDTO> list(Pageable pageable);
 }

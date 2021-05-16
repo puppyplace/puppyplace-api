@@ -46,4 +46,19 @@ public class CategoryController {
 
         return ResponseEntity.ok(categoryDTO);
     }
+
+//    @GetMapping
+//    public ResponseEntity<Page<CategoryDTO>> list(
+//            @Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
+//            @Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page){
+//        var pageable = PageRequest.of(page, size);
+//
+//        log.info(">>> [GET] A new request to get list of categories in page {} with size {}", page, size);
+//        var pageOfCategoriesDTO = categoryService.list(pageable);
+//        log.info(">>> Response: {}", pageOfCategoriesDTO);
+//
+//        return ResponseEntity.ok(pageOfCategoriesDTO);
+//    }
+
+
 }

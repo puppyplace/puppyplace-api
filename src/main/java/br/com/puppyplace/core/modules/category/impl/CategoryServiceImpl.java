@@ -69,6 +69,19 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryDTO;
 
     }
+
+//    public Page<CategoryDTO> list(Pageable pageable) {
+//        log.info(">>> Searching categories list from database");
+//
+//        var pageOfCategories = categoryRepository.findAll(pageable);
+//        var pageOfCategoriesDTO = pageOfCategories.map(
+//                category -> mapper.map(category, CategoryDTO.class)
+//        );
+//
+//        log.info(">>> Done");
+//        return pageOfCategoriesDTO;
+//    }
+
     private Category findOne(UUID id){
         log.info(">>> Starting find category with ID {}", id);
 

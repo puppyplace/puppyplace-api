@@ -18,9 +18,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -136,5 +134,36 @@ class CategoryControllerTest {
         // then
         verify(categoryService, times(0)).get(any(UUID.class));
     }
+
+//    @Test
+//    void shouldReturnSuccess_whenGetListOfCategories() throws Exception {
+//        // given
+//        List<CategoryDTO> categoryList = easyRandom.objects(CategoryDTO.class, 3).collect(Collectors.toList());
+//        var page = new PageImpl<CategoryDTO>(categoryList);
+//        when(categoryService.list(any(PageRequest.class))).thenReturn(page);
+//
+//        // when
+//        httpRequest.perform(get("/category").contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("content").isArray())
+//                .andExpect(jsonPath("pageable").isNotEmpty());
+//
+//        // then
+//        verify(categoryService, times(1)).list(any(PageRequest.class));
+//    }
+//
+//    @ParameterizedTest
+//    @CsvSource({"size, -1", "page, -2"})
+//    void shouldReturnError_whenGetListOfCategoriesWithInvalidSizeOrPage(String parameter, String value) throws Exception {
+//        // when
+//        httpRequest.perform(get("/category").accept(MediaType.APPLICATION_JSON).param(parameter, value))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
+//                .andExpect(jsonPath("messages").isNotEmpty()).andExpect(jsonPath("messages").isArray());
+//
+//        // then
+//        verify(categoryService, times(0)).list(any(PageRequest.class));
+//    }
+
 
 }
