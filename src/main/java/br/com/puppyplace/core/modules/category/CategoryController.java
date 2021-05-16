@@ -60,5 +60,14 @@ public class CategoryController {
 //        return ResponseEntity.ok(pageOfCategoriesDTO);
 //    }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") UUID id) {
+
+        log.info(">>> [DELETE] A new request to delete category with ID {}", id);
+        categoryService.delete(id);
+        log.info(">>> Category deleted! No response.");
+
+    }
 
 }

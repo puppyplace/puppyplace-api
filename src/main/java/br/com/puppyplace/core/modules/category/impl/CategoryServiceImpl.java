@@ -82,6 +82,12 @@ public class CategoryServiceImpl implements CategoryService{
 //        return pageOfCategoriesDTO;
 //    }
 
+    public void delete(UUID id) {
+        log.info(">>> Get category to delete.");
+        var category = this.findOne(id);
+        categoryRepository.delete(category);
+    }
+
     private Category findOne(UUID id){
         log.info(">>> Starting find category with ID {}", id);
 

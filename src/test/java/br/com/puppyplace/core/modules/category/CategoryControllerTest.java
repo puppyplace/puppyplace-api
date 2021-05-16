@@ -165,5 +165,27 @@ class CategoryControllerTest {
 //        verify(categoryService, times(0)).list(any(PageRequest.class));
 //    }
 
+    @Test
+    void shouldReturnSuccess_whenDeleteCategory() throws Exception {
+        // when
+        httpRequest.perform(delete("/category/{id}", UUID.randomUUID().toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
 
+        // then
+        verify(categoryService, times(1)).delete(any(UUID.class));
+    }
+
+    @Test
+    void shouldReturnError_whenDeleteCategoryWithInvalidID() throws Exception {
+        // when
+        httpRequest
+                .perform(delete("/category/{id}", "10")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
+                .andExpect(jsonPath("message").isNotEmpty());
+        // then
+        verify(categoryService, times(0)).delete(any(UUID.class));
+    }
 }
