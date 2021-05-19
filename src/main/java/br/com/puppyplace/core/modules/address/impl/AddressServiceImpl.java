@@ -1,10 +1,9 @@
 package br.com.puppyplace.core.modules.address.impl;
 
-import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 import br.com.puppyplace.core.entities.Address;
 import br.com.puppyplace.core.modules.address.AddressRepository;
 import br.com.puppyplace.core.modules.address.AddressService;
-import br.com.puppyplace.core.modules.customer.CustomerRepository;
+import br.com.puppyplace.core.modules.customer.CustomerService;
 import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -23,15 +22,13 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
+
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @Override
     public AddressDTO create(UUID customerID, AddressDTO addressDTO) {
-        var customer = customerRepository.findById(customerID).orElseThrow(() -> {
-            log.error(">>> Customer not found with ID {}", customerID);
-            throw new ResourceNotFoundException("No customer found with ID " + customerID);
-        });
+        var customer = customerService.findOne(customerID);
 
         var address = mapper.map(addressDTO, Address.class);
         address.setCustomer(customer);
