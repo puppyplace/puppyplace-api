@@ -84,7 +84,8 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.delete(customer);
     }
 
-    private Customer findOne(UUID id){
+    @Override
+    public Customer findOne(UUID id){
         log.info(">>> Starting find customer with ID {}", id);
 
         return customerRepository.findById(id).orElseThrow(() -> {
