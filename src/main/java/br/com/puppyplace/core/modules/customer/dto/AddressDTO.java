@@ -34,6 +34,5 @@ public class AddressDTO implements Serializable {
     @NotEmpty
     private String city;
 
-    @NotEmpty
     private StateEnum state;
 }
