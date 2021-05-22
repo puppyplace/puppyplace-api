@@ -63,6 +63,12 @@ public class AddressServiceImpl implements AddressService {
         }
     }
 
+    public void delete(UUID customerID, UUID addressID) {
+        log.info(">>> Get address to delete.");
+        var address = this.findOne(addressID);
+        addressRepository.delete(address);
+    }
+
     private Address findOne(UUID addressID){
         log.info(">>> Starting find address with ID {}", addressID);
 

@@ -18,8 +18,7 @@ public class AddressController {
     @Autowired
     private  AddressService addressService;
 
-    @PostMapping
-    @RequestMapping("/customer/{customer_id}/address")
+    @PostMapping("/customer/{customer_id}/address")
     public ResponseEntity<AddressDTO> create(
             @PathVariable("customer_id") UUID customerID, @Valid @RequestBody AddressDTO addressDTO
     ){
@@ -30,8 +29,7 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addressDTOCreated);
     }
 
-    @PutMapping
-    @RequestMapping("/customer/{customer_id}/address/{id}")
+    @PutMapping("/customer/{customer_id}/address/{id}")
     public ResponseEntity<AddressDTO> update(
             @PathVariable("customer_id") UUID customerID,
             @PathVariable("id") UUID addressID,
@@ -41,5 +39,13 @@ public class AddressController {
         log.info(">>> Response: {}", addressDTOUpdated);
 
         return ResponseEntity.ok(addressDTOUpdated);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/customer/{customer_id}/address/{id}")
+    public void delete(@PathVariable("customer_id") UUID customerID, @PathVariable("id") UUID addressID){
+        log.info(">>> [DELETE] A new request to delete address with ID {}", addressID);
+        addressService.delete(customerID, addressID);
+        log.info(">>> Address deleted! No response.");
     }
 }

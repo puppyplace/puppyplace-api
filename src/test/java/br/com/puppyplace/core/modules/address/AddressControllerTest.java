@@ -19,8 +19,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -117,5 +116,30 @@ public class AddressControllerTest {
                 .andExpect(jsonPath("messages").isArray());
         // then
         verify(addressService, times(0)).update(any(UUID.class), any(UUID.class), any(AddressDTO.class));
+    }
+
+    @Test
+    void shouldReturnSuccess_whenDeleteAddress() throws Exception {
+        // when
+        httpRequest.perform(delete("/customer/{customer_id}/address/{id}", UUID.randomUUID().toString(), UUID.randomUUID().toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        // then
+        verify(addressService, times(1)).delete(any(UUID.class), any(UUID.class));
+    }
+
+    @Test
+    void shouldReturnError_whenDeleteAddressWithInvalidID() throws Exception {
+        // when
+        httpRequest.perform(delete("/customer/{customer_id}/address/{id}", UUID.randomUUID().toString(), "123")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
+                .andExpect(jsonPath("message").isNotEmpty());
+
+        // verify
+        verify(addressService, times(0)).delete(any(UUID.class), any(UUID.class));
+
     }
 }

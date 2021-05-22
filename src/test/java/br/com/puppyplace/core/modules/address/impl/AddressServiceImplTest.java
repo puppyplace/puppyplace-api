@@ -11,6 +11,7 @@ import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
@@ -132,5 +133,19 @@ public class AddressServiceImplTest {
 
         verify(addressRepository, times(1)).findById(any(UUID.class));
         verify(addressRepository, times(1)).save(any(Address.class));
+    }
+
+    @Test
+    void shouldReturnSuccess_whenDeleteAddress(){
+        //given
+        when(addressRepository.findById(addressID)).thenReturn(Optional.of(address));
+
+        //when
+        addressService.delete(customerID, addressID);
+
+        //then
+        verify(addressRepository, times(1)).delete(address);
+        var argument = ArgumentCaptor.forClass(Address.class);
+        verify(addressRepository).delete(argument.capture());
     }
 }
