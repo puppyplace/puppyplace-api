@@ -34,7 +34,7 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDTO> update(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable("id") UUID id){
-        log.info(">>> [PUT] A new request to get product with ID {}", id);
+        log.info(">>> [PUT] A new request to update category with ID {}", id);
         var categoryDTOUpdated = categoryService.update(categoryDTO, id);
         log.info(">>> Response: {}", categoryDTOUpdated);
 
@@ -66,11 +66,8 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") UUID id) {
-
         log.info(">>> [DELETE] A new request to delete category with ID {}", id);
         categoryService.delete(id);
         log.info(">>> Category deleted! No response.");
-
     }
-
 }
