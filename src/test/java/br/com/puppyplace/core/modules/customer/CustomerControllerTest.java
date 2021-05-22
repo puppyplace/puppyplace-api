@@ -49,7 +49,6 @@ class CustomerControllerTest {
         this.customerDTO.setEmail(validEmail);
 
         var validCPF = "46797310016";
-        var invalidCPF="46797310018";
         this.customerDTO.setDocument(validCPF);
         this.customerDTO.setBirthdate(LocalDate.of(2000, 12, 01));
 
@@ -91,7 +90,21 @@ class CustomerControllerTest {
     }
 
     @Test
-    void shouldReturnError_whenSendACustomerWithAFutureBirthdDate() throws Exception {
+    void shouldReturnError_whenSendAValidCustomerWithInvalidDocumentToCreate() throws Exception {
+        var invalidCPF="46797310018";
+        customerDTO.setDocument(invalidCPF);
+        // when
+        httpRequest.perform(post("/customer").contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(customerDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
+                .andExpect(jsonPath("messages").isNotEmpty()).andExpect(jsonPath("messages").isArray());
+        // then
+        verify(customerService, times(0)).create(customerDTO);
+    }
+
+    @Test
+    void shouldReturnError_whenSendACustomerWithAFutureBirthDate() throws Exception {
         customerDTO.setBirthdate(LocalDate.of(2050, 12, 01));
         // when
         httpRequest.perform(post("/customer").contentType(MediaType.APPLICATION_JSON)
