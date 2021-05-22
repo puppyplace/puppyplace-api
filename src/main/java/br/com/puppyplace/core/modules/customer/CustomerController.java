@@ -20,17 +20,11 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<CustomerDTO> create(@Valid @RequestBody CustomerDTO customerDTO){
-//        customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
-        log.info(">>> [POST] A new customer received. RequestBody: {}", customerDTO);
+    public void create(@Valid @RequestBody CustomerDTO customerDTO){
         var customer = customerService.create(customerDTO);
-        log.info(">>> Response: {}", customer);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+        log.info(">>> Customer created");
     }
 
     @PutMapping("/{id}")

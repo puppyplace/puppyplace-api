@@ -15,6 +15,7 @@ import org.mockito.Mock;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -33,6 +34,9 @@ public class CustomerServiceImplTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private EasyRandom easyRandom;
     private CustomerDTO customerDTO;
     private Customer customer;
@@ -49,14 +53,13 @@ public class CustomerServiceImplTest {
         this.customerID = UUID.randomUUID();
 
         ReflectionTestUtils.setField(customerService, "mapper", new ModelMapper());
-
-
     }
 
     @Test
     void shouldReturnSuccess_whenCreateANewCustomer(){
         // given
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+        when(passwordEncoder.encode(any(String.class))).thenReturn("encodedPassword");
 
         // when
         var customerDTOPersisted = customerService.create(customerDTO);
@@ -69,6 +72,7 @@ public class CustomerServiceImplTest {
         assertEquals(customerDTO.getDocument(), customerDTOPersisted.getDocument());
         assertEquals(customerDTO.getCellphone(), customerDTOPersisted.getCellphone());
         assertEquals(customerDTO.getBirthdate(), customerDTOPersisted.getBirthdate());
+        assertEquals(customerDTO.getPassword(), customerDTOPersisted.getPassword());
 
         verify(customerRepository, times(1)).save(any(Customer.class));
     }

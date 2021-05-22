@@ -36,9 +36,6 @@ class CustomerControllerTest {
     @MockBean
     private CustomerService customerService;
 
-    @MockBean
-    private PasswordEncoder passwordEncoder;
-
     private EasyRandom easyRandom;
     private CustomerDTO customerDTO;
     private CustomerDTO invalidCustomerDTO;
@@ -47,9 +44,13 @@ class CustomerControllerTest {
     void init(){
         this.easyRandom = new EasyRandom();
         this.customerDTO = easyRandom.nextObject(CustomerDTO.class);
-        this.customerDTO.setEmail("fulano@email.com");
-        this.customerDTO.setPassword("1234567890");
-        this.customerDTO.setDocument("46797310016");
+
+        var validEmail = "fulano@email.com";
+        this.customerDTO.setEmail(validEmail);
+
+        var validCPF = "46797310016";
+        var invalidCPF="46797310018";
+        this.customerDTO.setDocument(validCPF);
         this.customerDTO.setBirthdate(LocalDate.of(2000, 12, 01));
 
         this.invalidCustomerDTO = CustomerDTO.builder()
@@ -59,7 +60,6 @@ class CustomerControllerTest {
                                     .cellphone("")
                                     .birthdate(LocalDate.now())
                                     .password("")
-//                                    .addresses(null)
                                     .build();
     }
 
@@ -71,13 +71,8 @@ class CustomerControllerTest {
         // when
         httpRequest.perform(post("/customer").contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(customerDTO)))
-                .andExpect(status().isCreated()).andExpect(jsonPath("id").value(customerDTO.getId().toString()))
-                .andExpect(jsonPath("name").value(customerDTO.getName()))
-                .andExpect(jsonPath("document").value(customerDTO.getDocument()))
-                .andExpect(jsonPath("email").value(customerDTO.getEmail()))
-                .andExpect(jsonPath("cellphone").value(customerDTO.getCellphone()))
-                .andExpect(jsonPath("birthdate").value(customerDTO.getBirthdate().toString()))
-                .andExpect(jsonPath("password").value(customerDTO.getPassword().toString()));
+                .andExpect(status().isCreated());
+
         // then
         verify(customerService, times(1)).create(customerDTO);
     }
