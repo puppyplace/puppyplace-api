@@ -1,5 +1,6 @@
 package br.com.puppyplace.core.modules.address.impl;
 
+import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 import br.com.puppyplace.core.entities.Address;
 import br.com.puppyplace.core.entities.Customer;
@@ -13,9 +14,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,5 +93,44 @@ public class AddressServiceImplTest {
         // then
         verify(customerService, times(1)).findOne(any(UUID.class));
         verify(addressRepository, times(0)).save(any(Address.class));
+    }
+
+    // create address with a invalid customer
+
+    @Test
+    void shouldReturnSuccess_whenUpdateAddress(){
+        // given
+        when(addressRepository.findById(addressID)).thenReturn(Optional.of(address));
+        when(addressRepository.save(any(Address.class))).thenReturn(address);
+
+        // when
+        var addressDTOPersisted = addressService.update(customerID, addressID, addressDTO);
+
+        // then
+        assertNotNull(addressDTOPersisted);
+        assertEquals(addressDTO.getId(), addressDTOPersisted.getId());
+        assertEquals(addressDTO.getStreet(), addressDTOPersisted.getStreet());
+        assertEquals(addressDTO.getNumber(), addressDTOPersisted.getNumber());
+        assertEquals(addressDTO.getComplement(), addressDTOPersisted.getComplement());
+        assertEquals(addressDTO.getZipcode(), addressDTOPersisted.getZipcode());
+        assertEquals(addressDTO.getState(), addressDTOPersisted.getState());
+
+        verify(addressRepository, times(1)).findById(any(UUID.class));
+        verify(addressRepository, times(1)).save(any(Address.class));
+    }
+
+    @Test
+    void shouldReturnError_whenUpdateAddressThatViolatesDataIntegrity(){
+        //given
+        when(addressRepository.findById(addressID)).thenReturn(Optional.of(address));
+        when(addressRepository.save(any(Address.class))).thenThrow(new DataIntegrityViolationException(""));
+
+        //then
+        assertThrows(BusinessException.class, () -> {
+            addressService.update(customerID, addressID, addressDTO);
+        });
+
+        verify(addressRepository, times(1)).findById(any(UUID.class));
+        verify(addressRepository, times(1)).save(any(Address.class));
     }
 }

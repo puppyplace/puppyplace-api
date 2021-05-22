@@ -21,12 +21,25 @@ public class AddressController {
     @PostMapping
     @RequestMapping("/customer/{customer_id}/address")
     public ResponseEntity<AddressDTO> create(
-            @PathVariable("customer_id") UUID customer_id, @Valid @RequestBody AddressDTO addressDTO
+            @PathVariable("customer_id") UUID customerID, @Valid @RequestBody AddressDTO addressDTO
     ){
         log.info(">>> [POST] A new address received. RequestBody: {}", addressDTO);
-        var address = addressService.create(customer_id, addressDTO);
-        log.info(">>> Response: {}", address);
+        var addressDTOCreated = addressService.create(customerID, addressDTO);
+        log.info(">>> Response: {}", addressDTOCreated);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(address);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addressDTOCreated);
+    }
+
+    @PutMapping
+    @RequestMapping("/customer/{customer_id}/address/{id}")
+    public ResponseEntity<AddressDTO> update(
+            @PathVariable("customer_id") UUID customerID,
+            @PathVariable("id") UUID addressID,
+            @Valid @RequestBody AddressDTO addressDTO) {
+        log.info(">>> [PUT] A new request to update address with ID {}", addressID);
+        var addressDTOUpdated = addressService.update(customerID, addressID, addressDTO);
+        log.info(">>> Response: {}", addressDTOUpdated);
+
+        return ResponseEntity.ok(addressDTOUpdated);
     }
 }
