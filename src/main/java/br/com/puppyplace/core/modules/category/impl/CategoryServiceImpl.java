@@ -1,6 +1,7 @@
 package br.com.puppyplace.core.modules.category.impl;
 
 import br.com.puppyplace.core.commons.exceptions.BusinessException;
+import br.com.puppyplace.core.commons.exceptions.ResourceAlreadyInUseException;
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 import br.com.puppyplace.core.entities.Category;
 import br.com.puppyplace.core.modules.category.CategoryRepository;
@@ -27,17 +28,22 @@ public class CategoryServiceImpl implements CategoryService{
 
     public CategoryDTO create(CategoryDTO categoryDTO) {           
         log.info(">>> Building category entity from category DTO");
-        
-        var category = Category.builder()
-                        .name(categoryDTO.getName())
-                        .build();
 
-        log.info(">>> Done");
+        var existingCategory = categoryRepository.findByName(categoryDTO.getName());
+        if (existingCategory.isPresent()){
+            log.error(">>> Category is already in use. Returning error to client");
+            throw new ResourceAlreadyInUseException("Category is already in use");
+        }
+
+        var category = mapper.map(categoryDTO, Category.class);
+        category.setCreatedAt(new Date());
+        category.setUpdatedAt(new Date());
 
         categoryRepository.save(category);
+        categoryDTO.setId(category.getId());
         log.info(">>> Category persisted with ID {}", category.getId());
-        
-        return mapper.map(category, CategoryDTO.class);
+
+        return categoryDTO;
     }
 
     public CategoryDTO update(CategoryDTO categoryDTO, UUID id){
