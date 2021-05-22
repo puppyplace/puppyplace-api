@@ -4,6 +4,7 @@ import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.ResourceAlreadyInUseException;
 import br.com.puppyplace.core.entities.Category;
 import br.com.puppyplace.core.entities.Customer;
+import br.com.puppyplace.core.entities.Product;
 import br.com.puppyplace.core.modules.category.CategoryRepository;
 import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
 import org.jeasy.random.EasyRandom;
@@ -15,11 +16,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -123,5 +128,21 @@ public class CategoryServiceImpTest {
         verify(categoryRepository, times(1)).delete(any(Category.class));
         var argument = ArgumentCaptor.forClass(Category.class);
         verify(categoryRepository).delete(argument.capture());
+    }
+
+    @Test
+    void shouldReturnSuccess_WhenGetPageOfCategories(){
+        //given
+        var listOfCategories = easyRandom.objects(Category.class, 2).collect(Collectors.toList());
+        var pageOfCategories = new PageImpl<>(listOfCategories);
+        when(categoryRepository.findAll(any(Pageable.class))).thenReturn(pageOfCategories);
+
+        //when
+        var pageOfProductDTO = categoryService.list(PageRequest.of(1, 10));
+
+        //then
+        assertNotNull(pageOfProductDTO);
+        assertEquals(listOfCategories.size(), pageOfProductDTO.getContent().size());
+        verify(categoryRepository, times(1)).findAll(any(Pageable.class));
     }
 }

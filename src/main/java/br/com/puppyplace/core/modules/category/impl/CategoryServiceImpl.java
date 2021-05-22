@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -76,17 +78,17 @@ public class CategoryServiceImpl implements CategoryService{
 
     }
 
-//    public Page<CategoryDTO> list(Pageable pageable) {
-//        log.info(">>> Searching categories list from database");
-//
-//        var pageOfCategories = categoryRepository.findAll(pageable);
-//        var pageOfCategoriesDTO = pageOfCategories.map(
-//                category -> mapper.map(category, CategoryDTO.class)
-//        );
-//
-//        log.info(">>> Done");
-//        return pageOfCategoriesDTO;
-//    }
+    public Page<CategoryDTO> list(Pageable pageable) {
+        log.info(">>> Searching categories list from database");
+
+        var pageOfCategories = categoryRepository.findAll(pageable);
+        var pageOfCategoriesDTO = pageOfCategories.map(
+                category -> mapper.map(category, CategoryDTO.class)
+        );
+
+        log.info(">>> Done");
+        return pageOfCategoriesDTO;
+    }
 
     public void delete(UUID id) {
         log.info(">>> Get category to delete.");
