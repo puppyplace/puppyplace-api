@@ -17,7 +17,7 @@ Se a sua porta 5432 já estiver em uso, substituir por outra (apenas do lado esq
 3. **Clonar o projeto**
 
 ```console
-git clone git@gitlab.com:puppyplace/back.git
+git clone git@github.com:puppyplace/puppyplace-api.git
 ```
 ```console
 cd back
