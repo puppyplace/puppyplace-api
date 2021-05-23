@@ -1,14 +1,18 @@
 package br.com.puppyplace.core.modules.address;
 
 import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
+import br.com.puppyplace.core.modules.product.dto.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.UUID;
 
 @RestController
@@ -47,5 +51,29 @@ public class AddressController {
         log.info(">>> [DELETE] A new request to delete address with ID {}", addressID);
         addressService.delete(customerID, addressID);
         log.info(">>> Address deleted! No response.");
+    }
+
+    @GetMapping("/customer/{customer_id}/address/{id}")
+    public ResponseEntity<AddressDTO> get(@PathVariable("customer_id") UUID customerID, @PathVariable("id") UUID addressID){
+        log.info(">>> [GET] A new request to get address with ID {}", addressID);
+        var addressDTO = addressService.get(customerID, addressID);
+        log.info(">>> Response: {}", addressDTO);
+
+        return ResponseEntity.ok(addressDTO);
+    }
+
+    @GetMapping("/customer/{customer_id}/address/")
+    public ResponseEntity<Page<AddressDTO>> list(
+            @PathVariable("customer_id") UUID customerID,
+            @Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
+            @Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page){
+        var pageable = PageRequest.of(page, size);
+
+        log.info(">>> [GET] A new request to get list of products in page {} with size {}", page, size);
+        var pageOfAddressDTO =
+                addressService.list(pageable, customerID);
+        log.info(">>> Response: {}", pageOfAddressDTO);
+
+        return ResponseEntity.ok(pageOfAddressDTO);
     }
 }

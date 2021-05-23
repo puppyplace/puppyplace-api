@@ -11,10 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -24,7 +27,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Autowired
     private AddressRepository addressRepository;
-
 
     @Autowired
     private CustomerService customerService;
@@ -67,6 +69,26 @@ public class AddressServiceImpl implements AddressService {
         log.info(">>> Get address to delete.");
         var address = this.findOne(addressID);
         addressRepository.delete(address);
+    }
+
+    public AddressDTO get(UUID customerID, UUID addressID){
+        var address= this.findOne(addressID);
+
+        log.info(">>> Building address DTO from address entity");
+        var addressDTO = mapper.map(address, AddressDTO.class);
+        log.info(">>> Done");
+
+        return addressDTO;
+    }
+
+    public Page<AddressDTO> list(Pageable pageable, UUID customerID){
+        log.info(">>> Searching addresses list from database");
+
+        var pageOfAddresses = addressRepository.findAllByCustomerID(customerID);
+        var pageOfProductsDTO = pageOfAddresses.map(address -> mapper.map(address, AddressDTO.class));
+
+        log.info(">>> Done");
+        return pageOfProductsDTO;
     }
 
     private Address findOne(UUID addressID){

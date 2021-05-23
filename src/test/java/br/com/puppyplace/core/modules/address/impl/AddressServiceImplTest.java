@@ -4,6 +4,7 @@ import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 import br.com.puppyplace.core.entities.Address;
 import br.com.puppyplace.core.entities.Customer;
+import br.com.puppyplace.core.entities.Product;
 import br.com.puppyplace.core.modules.address.AddressRepository;
 import br.com.puppyplace.core.modules.customer.CustomerService;
 import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
@@ -16,11 +17,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -133,6 +138,55 @@ public class AddressServiceImplTest {
 
         verify(addressRepository, times(1)).findById(any(UUID.class));
         verify(addressRepository, times(1)).save(any(Address.class));
+    }
+
+    @Test
+    void shouldReturnSuccess_WhenGetExistentAddress(){
+        //given
+        when(addressRepository.findById(addressID)).thenReturn(Optional.of(address));
+
+        //when
+        var addressDTO = addressService.get(customerID, addressID);
+
+        //then
+        assertNotNull(addressDTO);
+        assertEquals(addressDTO.getId(), address.getId());
+        assertEquals(addressDTO.getStreet(), address.getStreet());
+        assertEquals(addressDTO.getNumber(), address.getNumber());
+        assertEquals(addressDTO.getComplement(), address.getComplement());
+        assertEquals(addressDTO.getZipcode(), address.getZipcode());
+        assertEquals(addressDTO.getState(), address.getState());
+
+        verify(addressRepository, times(1)).findById(addressID);
+    }
+
+    @Test
+    void shouldReturnError_WhenGetInexistentAddress(){
+        //given
+        when(addressRepository.findById(addressID)).thenReturn(Optional.ofNullable(null));
+
+        //then
+        assertThrows(ResourceNotFoundException.class, () -> {
+            addressService.get(customerID, addressID);
+        });
+        verify(addressRepository, times(1)).findById(addressID);
+    }
+
+    @Test
+    void shouldReturnSuccess_WhenGetPageOfAddresses(){
+        //given
+        var listOfProduct = easyRandom.objects(Address.class, 2)
+                .collect(Collectors.toList());
+        var pageOfProducts = new PageImpl<>(listOfProduct);
+        when(addressRepository.findAllByCustomerID(customerID)).thenReturn(pageOfProducts);
+
+        //when
+        var pageOfAddressDTO = addressService.list(PageRequest.of(1, 10), customerID);
+
+        //then
+        assertNotNull(pageOfAddressDTO);
+        assertEquals(listOfProduct.size(), pageOfAddressDTO.getContent().size());
+        verify(addressRepository, times(1)).findAllByCustomerID(customerID);
     }
 
     @Test
