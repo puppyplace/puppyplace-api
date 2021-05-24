@@ -39,7 +39,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> createOrder(@PathVariable("id") UUID id){
+    public ResponseEntity<OrderDTO> get(@PathVariable("id") UUID id){
         log.info(">>> [GET] A new request to get order with ID {}", id);
         var orderDTO = Optional.of(id)
                 .map(s -> orderService.findId(id))
