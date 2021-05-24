@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,29 +26,26 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderDTO implements Serializable {
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private static final long serialVersionUID = 7696933275615277004L;
 
     private UUID id;
 
-    @NotEmpty
+    @NotEmpty(message = "Field Customer is mandadory")
     private CustomerDTO customer;
 
-    @NotEmpty
+    @NotEmpty(message = "Field Address is mandaroty")
     private AddressDTO address;
 
-    @NotEmpty
+    @NotEmpty(message = "Field payMethod is mandatory")
     private PayMethodEnum payMethod;
 
-    @NotEmpty
+    @NotEmpty(message = "List of Products must be minimum 1")
     private List<ProductOrderDTO> productsOrder;
 
-    @NotEmpty
+    @Positive
+    @NotEmpty(message = "Field Total is mandaory")
     private BigDecimal total;
 
-    @NotEmpty
     private String trackingCode;
 
 }
