@@ -4,11 +4,11 @@ import br.com.puppyplace.core.commons.enums.PayMethodEnum;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-@Entity(name="order")
+@Entity(name = "order")
+@Table(name = "order", schema = "public")
 @Builder
 @Data
 @AllArgsConstructor
@@ -16,11 +16,11 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 public class Order extends AbstractEntity {
 
-    @OneToOne
-    @JoinColumn(name = "id_customer")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_customer", nullable = false)
     private Customer customer;
 
-    @OneToOne
+    @OneToOne(fetch =FetchType.EAGER)
     @JoinColumn(name= "id_address", nullable = false)
     private Address address;
 
@@ -28,11 +28,11 @@ public class Order extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private PayMethodEnum payMethod;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    private List<ProductOrder> productsOrder;
+    @OneToMany(mappedBy = "order",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductOrder> productOrders = new ArrayList<>();
 
     @Column
-    private BigDecimal total;
+    private Float total;
 
     @Column
     private String trackingCode;

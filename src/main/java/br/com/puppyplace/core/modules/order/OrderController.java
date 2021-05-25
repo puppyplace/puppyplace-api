@@ -2,7 +2,6 @@ package br.com.puppyplace.core.modules.order;
 
 import br.com.puppyplace.core.modules.order.dto.OrderDTO;
 import br.com.puppyplace.core.modules.order.service.OrderService;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,21 +22,23 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDTO order){
+    public ResponseEntity<Optional<OrderDTO>> createOrder(@Valid @RequestBody OrderDTO order){
         log.info(">>> [POST] A new Order to create received. RequestBody: {}", order);
-        var orderDTO = Optional.of(order)
-                .map(s -> orderService.createOrder(s))
-                .map(s -> orderService.convertToOrderDTO(s));
+        var orderDTO = Optional.ofNullable(order)
+                .map(orderService::createOrder)
+                .map(orderService::convertToOrderDTO)
+                ;
         log.info(">>> Response: {}", orderDTO);
         return ResponseEntity.ok(orderDTO);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> get(@PathVariable("id") UUID id){
+    public ResponseEntity<Optional<OrderDTO>> get(@PathVariable("id") UUID id){
         log.info(">>> [GET] A new request to get order with ID {}", id);
-        var orderDTO = Optional.of(id)
+        var orderDTO =
+                Optional.of(id)
                 .map(s -> orderService.findId(id))
-                .map(s -> orderService.convertToOrderDTO(s));
+                .map(orderService::convertToOrderDTO);
         log.info(">>> Response: {}", orderDTO);
         return ResponseEntity.ok(orderDTO);
     }

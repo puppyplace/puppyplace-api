@@ -1,21 +1,13 @@
 package br.com.puppyplace.core.modules.order.dto;
 
 import br.com.puppyplace.core.commons.enums.PayMethodEnum;
-import br.com.puppyplace.core.entities.Address;
-import br.com.puppyplace.core.entities.Customer;
-import br.com.puppyplace.core.entities.Order;
-import br.com.puppyplace.core.entities.ProductOrder;
-import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
-import br.com.puppyplace.core.modules.customer.dto.CustomerDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,21 +22,21 @@ public class OrderDTO implements Serializable {
 
     private UUID id;
 
-    @NotEmpty(message = "Field Customer is mandadory")
-    private CustomerDTO customer;
+    @NotNull(message = "Field ID Customer is mandatory")
+    private UUID customerId;
 
-    @NotEmpty(message = "Field Address is mandaroty")
-    private AddressDTO address;
+    @NotNull(message = "Field ID Address is mandaroty")
+    private UUID addressId;
 
-    @NotEmpty(message = "Field payMethod is mandatory")
+    @NotNull(message = "Field payMethod is mandatory")
     private PayMethodEnum payMethod;
 
     @NotEmpty(message = "List of Products must be minimum 1")
-    private List<ProductOrderDTO> productsOrder;
+    @JsonProperty(value = "productOrders")
+    private List<ProductOrderDTO> productOrderDTOS ;
 
-    @Positive
-    @NotEmpty(message = "Field Total is mandaory")
-    private BigDecimal total;
+    @DecimalMin(value = "0.0", inclusive = false, message = "Field Total is mandatory")
+    private Float total;
 
     private String trackingCode;
 

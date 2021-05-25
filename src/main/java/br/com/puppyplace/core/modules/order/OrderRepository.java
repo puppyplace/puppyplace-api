@@ -1,11 +1,9 @@
 package br.com.puppyplace.core.modules.order;
 
 import br.com.puppyplace.core.entities.Order;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-@Repository
-public interface OrderRepository extends JpaRepository<Order, UUID> {
+public interface OrderRepository extends CrudRepository<Order, UUID> {
 }

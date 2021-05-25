@@ -1,12 +1,12 @@
 package br.com.puppyplace.core.entities;
 
+import br.com.puppyplace.core.modules.order.dto.ProductOrderDTO;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
+@Table(name = "product_order", schema = "public")
 @Builder
 @Data
 @AllArgsConstructor
@@ -14,21 +14,27 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 public class ProductOrder extends AbstractEntity {
 
-    @OneToOne
+    public ProductOrder(ProductOrderDTO productOrderDTO){
+        this.quantity = productOrderDTO.getQuantity();
+        this.unitPrice = productOrderDTO.getUnitPrice();
+        this.totalPrice = productOrderDTO.getTotalPrice();
+    }
+
+    @OneToOne(fetch =FetchType.EAGER)
     @JoinColumn(name= "id_product", nullable = false)
     private Product product;
 
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "id_order", nullable = false)
     private Order order;
 
     @Column
-    private BigDecimal unitPrice;
+    private Float unitPrice;
 
     @Column
     private Integer quantity;
 
     @Column
-    private BigDecimal totalPrice;
+    private Float totalPrice;
 
 }
