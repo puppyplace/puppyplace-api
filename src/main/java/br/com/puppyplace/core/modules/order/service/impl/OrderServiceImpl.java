@@ -8,6 +8,8 @@ import br.com.puppyplace.core.entities.ProductOrder;
 import br.com.puppyplace.core.modules.address.AddressRepository;
 import br.com.puppyplace.core.modules.customer.CustomerRepository;
 import br.com.puppyplace.core.modules.order.OrderRepository;
+import br.com.puppyplace.core.modules.order.dto.OrderAddressDTO;
+import br.com.puppyplace.core.modules.order.dto.OrderCustomerDTO;
 import br.com.puppyplace.core.modules.order.dto.OrderDTO;
 import br.com.puppyplace.core.modules.order.dto.ProductOrderDTO;
 import br.com.puppyplace.core.modules.order.service.OrderService;
@@ -44,6 +46,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(OrderDTO orderDTO) {
         var order = modelMapper.map(orderDTO, Order.class);
+        order.setCustomer(validCustomer(orderDTO));
+        order.setAddress(validAddress(orderDTO));
         List<ProductOrder> productOrders = orderDTO.getProductOrderDTOS()
                 .stream()
                 .map(this::validProduct)
@@ -103,7 +107,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO convertToOrderDTO(Order order){
-        return modelMapper.map(order, OrderDTO.class);
+
+        var orderDTO = modelMapper.map(order, OrderDTO.class);
+        orderDTO.setCustomer(modelMapper.map(order.getCustomer(), OrderCustomerDTO.class));
+        orderDTO.setAddress(modelMapper.map(order.getAddress(), OrderAddressDTO.class));
+
+        order.getProductOrders().forEach(s->
+                orderDTO.getProductOrderDTOS().add(modelMapper.map(s, ProductOrderDTO.class))
+        );
+
+        return orderDTO;
     }
 
 }

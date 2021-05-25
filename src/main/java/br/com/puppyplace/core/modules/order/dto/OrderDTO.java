@@ -8,6 +8,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,15 +26,19 @@ public class OrderDTO implements Serializable {
     @NotNull(message = "Field ID Customer is mandatory")
     private UUID customerId;
 
+    private OrderCustomerDTO customer;
+
     @NotNull(message = "Field ID Address is mandaroty")
     private UUID addressId;
+
+    private OrderAddressDTO address;
 
     @NotNull(message = "Field payMethod is mandatory")
     private PayMethodEnum payMethod;
 
     @NotEmpty(message = "List of Products must be minimum 1")
     @JsonProperty(value = "productOrders")
-    private List<ProductOrderDTO> productOrderDTOS ;
+    private List<ProductOrderDTO> productOrderDTOS = new ArrayList<>();
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Field Total is mandatory")
     private Float total;

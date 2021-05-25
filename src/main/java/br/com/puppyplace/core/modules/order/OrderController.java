@@ -21,10 +21,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping(value = "/create")
+    @PostMapping
     public ResponseEntity<Optional<OrderDTO>> createOrder(@Valid @RequestBody OrderDTO order){
         log.info(">>> [POST] A new Order to create received. RequestBody: {}", order);
-        var orderDTO = Optional.ofNullable(order)
+        var orderDTO =
+                Optional.ofNullable(order)
                 .map(orderService::createOrder)
                 .map(orderService::convertToOrderDTO)
                 ;
