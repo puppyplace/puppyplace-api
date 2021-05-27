@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
         var product = productRepository.findById(productOrderDTO.getProductId())
                 .orElseThrow(() -> {
                     log.error(">>> Product not found with ID {}", productOrderDTO.getProductId());
-                    throw new ResourceNotFoundException("No Address found with ID " + productOrderDTO.getProductId());
+                    throw new ResourceNotFoundException("No Product found with ID " + productOrderDTO.getProductId());
                 });
 
         var productOrder = new ProductOrder(productOrderDTO);
@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error(">>> Order not found with ID {}", id);
-                    throw new ResourceNotFoundException("No Order found with ID " + id.toString());
+                    throw new ResourceNotFoundException("No Order found with ID " + id);
                 });
     }
 
