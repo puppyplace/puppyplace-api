@@ -4,7 +4,6 @@ import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 import br.com.puppyplace.core.entities.Address;
 import br.com.puppyplace.core.entities.Customer;
-import br.com.puppyplace.core.entities.Product;
 import br.com.puppyplace.core.modules.address.AddressRepository;
 import br.com.puppyplace.core.modules.customer.CustomerService;
 import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
@@ -59,7 +58,7 @@ public class AddressServiceImplTest {
         this.addressID = UUID.randomUUID();
 
         this.customer = easyRandom.nextObject(Customer.class);
-        this.customerID = UUID.randomUUID();
+        this.customerID = this.customer.getId();
 
         ReflectionTestUtils.setField(addressService, "mapper", new ModelMapper());
     }
@@ -101,13 +100,13 @@ public class AddressServiceImplTest {
         verify(addressRepository, times(0)).save(any(Address.class));
     }
 
-    // create address with a invalid customer
-
     @Test
     void shouldReturnSuccess_whenUpdateAddress(){
         // given
         when(addressRepository.findById(addressID)).thenReturn(Optional.of(address));
         when(addressRepository.save(any(Address.class))).thenReturn(address);
+
+        when(customerService.findOne(customerID)).thenReturn(customer);
 
         // when
         var addressDTOPersisted = addressService.update(customerID, addressID, addressDTO);
@@ -121,8 +120,9 @@ public class AddressServiceImplTest {
         assertEquals(addressDTO.getZipcode(), addressDTOPersisted.getZipcode());
         assertEquals(addressDTO.getState(), addressDTOPersisted.getState());
 
-        verify(addressRepository, times(1)).findById(any(UUID.class));
+        verify(addressRepository, times(1)).findById(addressID);
         verify(addressRepository, times(1)).save(any(Address.class));
+        verify(customerService, times(1)).findOne(customerID);
     }
 
     @Test
@@ -161,7 +161,7 @@ public class AddressServiceImplTest {
     }
 
     @Test
-    void shouldReturnError_WhenGetInexistentAddress(){
+    void shouldReturnError_WhenNotFindAddress(){
         //given
         when(addressRepository.findById(addressID)).thenReturn(Optional.ofNullable(null));
 
@@ -178,7 +178,7 @@ public class AddressServiceImplTest {
         var listOfProduct = easyRandom.objects(Address.class, 2)
                 .collect(Collectors.toList());
         var pageOfProducts = new PageImpl<>(listOfProduct);
-        when(addressRepository.findAllByCustomerID(customerID)).thenReturn(pageOfProducts);
+        when(addressRepository.findByCustomerId(any(UUID.class), any(Pageable.class))).thenReturn(pageOfProducts);
 
         //when
         var pageOfAddressDTO = addressService.list(PageRequest.of(1, 10), customerID);
@@ -186,7 +186,7 @@ public class AddressServiceImplTest {
         //then
         assertNotNull(pageOfAddressDTO);
         assertEquals(listOfProduct.size(), pageOfAddressDTO.getContent().size());
-        verify(addressRepository, times(1)).findAllByCustomerID(customerID);
+        verify(addressRepository, times(1)).findByCustomerId(any(UUID.class), any(Pageable.class));
     }
 
     @Test

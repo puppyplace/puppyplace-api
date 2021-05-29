@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -49,10 +48,13 @@ public class AddressServiceImpl implements AddressService {
     public AddressDTO update(UUID customerID, UUID addressID, AddressDTO addressDTO){
         try{
             log.info(">>> Starting update entity");
-            this.findOne(addressID);
+            var foundAddress = this.findOne(addressID);
+            var customer = customerService.findOne(customerID);
             var address = mapper.map(addressDTO, Address.class);
             address.setId(addressID);
             address.setUpdatedAt(new Date());
+            address.setCreatedAt(foundAddress.getCreatedAt());
+            address.setCustomer(customer);
 
             addressRepository.save(address);
             log.info(">>> Entity persisted!");
@@ -84,7 +86,7 @@ public class AddressServiceImpl implements AddressService {
     public Page<AddressDTO> list(Pageable pageable, UUID customerID){
         log.info(">>> Searching addresses list from database");
 
-        var pageOfAddresses = addressRepository.findAllByCustomerID(customerID);
+        var pageOfAddresses = addressRepository.findByCustomerId(customerID, pageable);
         var pageOfProductsDTO = pageOfAddresses.map(address -> mapper.map(address, AddressDTO.class));
 
         log.info(">>> Done");

@@ -94,7 +94,18 @@ public class AddressControllerTest {
         verify(addressService, times(0)).create(customerID, addressDTO);
     }
 
-    // create address with a invalid customer
+    @Test
+    void shouldReturnError_whenSendAInvalidCustomerToCreateAddress() throws Exception {
+        // when
+        httpRequest.perform(post("/customer/{customer_id}/address", "12345")
+                .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(addressDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
+                .andExpect(jsonPath("message").isNotEmpty());
+
+        // then
+        verify(addressService, times(0)).create(any(UUID.class), any(AddressDTO.class));
+    }
 
     @Test
     void shouldReturnSuccess_whenUpdateAddressWithValidPayload() throws Exception {
