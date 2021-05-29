@@ -1,7 +1,5 @@
 package br.com.puppyplace.core.modules.order.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,9 +8,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class OrderCustomerDTO implements Serializable {
 
     private static final long serialVersionUID = 6234552399505688251L;

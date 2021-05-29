@@ -97,12 +97,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findId(UUID id) {
-        return orderRepository.findById(id)
+    public OrderDTO findId(UUID id) {
+        var order = orderRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error(">>> Order not found with ID {}", id);
                     throw new ResourceNotFoundException("No Order found with ID " + id);
                 });
+        return convertToOrderDTO(order);
+    }
+
+    @Override
+    public OrderDTO create(OrderDTO order) {
+        return convertToOrderDTO(createOrder(order));
     }
 
     @Override

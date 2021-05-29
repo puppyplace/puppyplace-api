@@ -2,7 +2,9 @@ package br.com.puppyplace.core.modules.order.dto;
 
 import br.com.puppyplace.core.commons.enums.PayMethodEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
@@ -13,10 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Builder
 @EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 public class OrderDTO implements Serializable {
 
     private static final long serialVersionUID = 7696933275615277004L;

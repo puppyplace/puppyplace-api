@@ -11,9 +11,10 @@ import java.util.UUID;
 
 public interface OrderService {
 
-    Order createOrder(OrderDTO order);
+    OrderDTO create(OrderDTO order);
     OrderDTO convertToOrderDTO(Order order);
-    Order findId(UUID id);
+    OrderDTO findId(UUID id);
+    Order createOrder(OrderDTO order);
     Customer validCustomer(OrderDTO orderDTO);
     Address validAddress(OrderDTO orderDTO);
     ProductOrder validProduct(ProductOrderDTO productOrderDTO);

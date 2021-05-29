@@ -10,10 +10,8 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Data
-@Builder
 @EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductOrderDTO implements Serializable {
 
     private static final long serialVersionUID = 291678832931506131L;

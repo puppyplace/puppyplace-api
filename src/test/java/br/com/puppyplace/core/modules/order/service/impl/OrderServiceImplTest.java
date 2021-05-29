@@ -1,28 +1,25 @@
 package br.com.puppyplace.core.modules.order.service.impl;
 
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
-import br.com.puppyplace.core.entities.Address;
-import br.com.puppyplace.core.entities.Customer;
 import br.com.puppyplace.core.entities.Order;
-import br.com.puppyplace.core.entities.Product;
 import br.com.puppyplace.core.modules.address.AddressRepository;
 import br.com.puppyplace.core.modules.customer.CustomerRepository;
-import br.com.puppyplace.core.modules.customer.dto.CustomerDTO;
 import br.com.puppyplace.core.modules.order.OrderRepository;
 import br.com.puppyplace.core.modules.order.builders.OrderBuilder;
+import br.com.puppyplace.core.modules.order.dto.OrderDTO;
 import br.com.puppyplace.core.modules.order.dto.ProductOrderDTO;
 import br.com.puppyplace.core.modules.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.jeasy.random.EasyRandom;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -55,8 +52,7 @@ class OrderServiceImplTest {
     private static EasyRandom easyRandom = new EasyRandom();
 
     @BeforeEach
-    void init(){
-
+    void setUp(){
         ReflectionTestUtils.setField(orderService, "modelMapper", new ModelMapper());
         this.orderMock = OrderBuilder.completeOrder().getMock();
     }
@@ -128,7 +124,7 @@ class OrderServiceImplTest {
         when(orderRepository.findById(orderMock.getId()))
                 .thenReturn(Optional.of(orderMock));
         //When
-        Order order = orderService.findId(orderMock.getId());
+        OrderDTO order = orderService.findId(orderMock.getId());
         //Then
         assertNotNull(order);
         assertEquals(orderMock.getId(), order.getId());
