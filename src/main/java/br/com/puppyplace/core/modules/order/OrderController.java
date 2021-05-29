@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,15 +30,23 @@ public class OrderController {
                 Optional.ofNullable(order)
                 .map(orderService::create)
                 ;
-        log.info(">>> Response: {}", orderDTO);
+        log.info(">>> Response createOder: {}", orderDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderDTO);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<OrderDTO> get(@PathVariable("id") UUID id){
         log.info(">>> [GET] A new request to get order with ID {}", id);
-        var orderDTO = orderService.findId(id);
-        log.info(">>> Response: {}", orderDTO);
+        var orderDTO = orderService.getOrderId(id);
+        log.info(">>> Response getOrder: {}", orderDTO);
+        return ResponseEntity.ok(orderDTO);
+    }
+
+    @GetMapping(value = "/customer/{id}")
+    public ResponseEntity<List<OrderDTO>> getOrderByCustomer(@PathVariable("id") UUID id){
+        log.info(">>> [GET] A new request to get order with ID {}", id);
+        var orderDTO = orderService.getOrdersByCustomer(id);
+        log.info(">>> Response OrdersByCustom: {}", orderDTO);
         return ResponseEntity.ok(orderDTO);
     }
 }

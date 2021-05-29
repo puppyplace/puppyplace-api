@@ -17,10 +17,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -124,7 +124,7 @@ class OrderServiceImplTest {
         when(orderRepository.findById(orderMock.getId()))
                 .thenReturn(Optional.of(orderMock));
         //When
-        OrderDTO order = orderService.findId(orderMock.getId());
+        OrderDTO order = orderService.getOrderId(orderMock.getId());
         //Then
         assertNotNull(order);
         assertEquals(orderMock.getId(), order.getId());
@@ -137,8 +137,22 @@ class OrderServiceImplTest {
         UUID orderId = UUID.randomUUID();
         //When
         Exception exception = assertThrows(ResourceNotFoundException.class, () ->
-                orderService.findId(orderId));
+                orderService.getOrderId(orderId));
         //Then
         assertEquals("No Order found with ID "+ orderId, exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnSucess_whenFindOrdersByCustomer(){
+
+        //Given
+        when(orderRepository.findByCustomerId(orderMock.getCustomer().getId()))
+                .thenReturn(Arrays.asList(orderMock, orderMock));
+        //When
+        var orders = orderService.getOrdersByCustomer(orderMock.getCustomer().getId());
+        //Then
+        assertNotNull(orders);
+        assertEquals(orderMock.getCustomer().getId(), orders.get(0).getCustomer().getCustomerId());
+        assertEquals(orderMock.getId(), orders.get(0).getId());
     }
 }

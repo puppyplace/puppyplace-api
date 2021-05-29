@@ -78,7 +78,7 @@ class OrderControllerTest {
     @Test
     void shouldReturnSuccess_whenFindIdOrder() throws Exception {
         // given
-        when(orderService.findId(any(UUID.class))).thenReturn(orderDTOMock);
+        when(orderService.getOrderId(any(UUID.class))).thenReturn(orderDTOMock);
 
         // When Then
         httpRequest
@@ -88,7 +88,7 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(orderDTOMock.getId().toString()));
 
-        verify(orderService, times(1)).findId(orderMock.getId());
+        verify(orderService, times(1)).getOrderId(orderMock.getId());
     }
 
 }
