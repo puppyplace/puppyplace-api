@@ -4,13 +4,15 @@ import br.com.puppyplace.core.modules.order.dto.OrderDTO;
 import br.com.puppyplace.core.modules.order.service.OrderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import javax.validation.constraints.Min;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,9 +45,14 @@ public class OrderController {
     }
 
     @GetMapping(value = "/customer/{id}")
-    public ResponseEntity<List<OrderDTO>> getOrderByCustomer(@PathVariable("id") UUID id){
+    public ResponseEntity<Page<OrderDTO>> getOrderByCustomer(
+            @PathVariable("id") UUID id,
+            @Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
+            @Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page
+    ){
+        var pageable = PageRequest.of(page, size);
         log.info(">>> [GET] A new request to get order with ID {}", id);
-        var orderDTO = orderService.getOrdersByCustomer(id);
+        var orderDTO = orderService.getOrdersByCustomer(id, pageable);
         log.info(">>> Response OrdersByCustom: {}", orderDTO);
         return ResponseEntity.ok(orderDTO);
     }

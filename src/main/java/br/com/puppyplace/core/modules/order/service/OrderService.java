@@ -6,13 +6,14 @@ import br.com.puppyplace.core.entities.Order;
 import br.com.puppyplace.core.entities.ProductOrder;
 import br.com.puppyplace.core.modules.order.dto.OrderDTO;
 import br.com.puppyplace.core.modules.order.dto.ProductOrderDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface OrderService {
 
-    List<OrderDTO> getOrdersByCustomer(UUID id);
+    Page<OrderDTO> getOrdersByCustomer(UUID id, Pageable pageable);
     OrderDTO create(OrderDTO order);
     OrderDTO convertToOrderDTO(Order order);
     OrderDTO getOrderId(UUID id);

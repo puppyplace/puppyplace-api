@@ -17,6 +17,8 @@ import br.com.puppyplace.core.modules.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -107,12 +109,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> getOrdersByCustomer(UUID id) {
+    public Page<OrderDTO> getOrdersByCustomer(UUID id, Pageable pageable) {
         return orderRepository
-                .findByCustomerId(id)
-                .stream()
-                .map(this::convertToOrderDTO)
-                .collect(Collectors.toList());
+                .findByCustomerId(id, pageable)
+                .map(this::convertToOrderDTO);
     }
 
     @Override

@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -49,7 +51,7 @@ class OrderServiceImplTest {
 
     private Order orderMock;
 
-    private static EasyRandom easyRandom = new EasyRandom();
+    private static final  EasyRandom easyRandom = new EasyRandom();
 
     @BeforeEach
     void setUp(){
@@ -146,13 +148,12 @@ class OrderServiceImplTest {
     void shouldReturnSucess_whenFindOrdersByCustomer(){
 
         //Given
-        when(orderRepository.findByCustomerId(orderMock.getCustomer().getId()))
-                .thenReturn(Arrays.asList(orderMock, orderMock));
+        when(orderRepository.findByCustomerId(orderMock.getCustomer().getId(), PageRequest.of(0, 10)))
+                .thenReturn(new PageImpl<>(Arrays.asList(orderMock, orderMock)));
         //When
-        var orders = orderService.getOrdersByCustomer(orderMock.getCustomer().getId());
+        var orders = orderService.getOrdersByCustomer(orderMock.getCustomer().getId(), PageRequest.of(0, 10));
         //Then
         assertNotNull(orders);
-        assertEquals(orderMock.getCustomer().getId(), orders.get(0).getCustomer().getCustomerId());
-        assertEquals(orderMock.getId(), orders.get(0).getId());
+        assertEquals(2, orders.getTotalElements());
     }
 }
