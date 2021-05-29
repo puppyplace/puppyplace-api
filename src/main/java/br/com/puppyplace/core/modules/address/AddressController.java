@@ -62,7 +62,7 @@ public class AddressController {
         return ResponseEntity.ok(addressDTO);
     }
 
-    @GetMapping("/customer/{customer_id}/address/")
+    @GetMapping("/customer/{customer_id}/address")
     public ResponseEntity<Page<AddressDTO>> list(
             @PathVariable("customer_id") UUID customerID,
             @Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
