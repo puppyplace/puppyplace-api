@@ -14,9 +14,10 @@
 	<name>backend</name>
 	<description>backend for puppy place</description>
 	<properties>
-		<java.version>11</java.version>
-		<sonar.projectKey>puppyplace_back</sonar.projectKey>
-		<sonar.organization>puppyplace</sonar.organization>
+		<java.version>11</java.version>  
+		<sonar.projectKey>puppyplace_puppyplace-api</sonar.projectKey>
+		<sonar.organization>puppyplace-github</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
