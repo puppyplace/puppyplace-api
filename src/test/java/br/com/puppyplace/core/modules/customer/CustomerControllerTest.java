@@ -39,6 +39,7 @@ class CustomerControllerTest {
     private EasyRandom easyRandom;
     private CustomerDTO customerDTO;
     private CustomerDTO invalidCustomerDTO;
+    private UUID customerID;
 
     @BeforeEach
     void init(){
@@ -51,7 +52,7 @@ class CustomerControllerTest {
         var validCPF = "46797310016";
         this.customerDTO.setDocument(validCPF);
         this.customerDTO.setBirthdate(LocalDate.of(2000, 12, 01));
-
+        this.customerID = UUID.randomUUID();
         this.invalidCustomerDTO = CustomerDTO.builder()
                                     .name("")
                                     .email("")
@@ -170,5 +171,41 @@ class CustomerControllerTest {
         // verify
         verify(customerService, times(0)).delete(any(UUID.class));
 
+    }
+
+    @Test
+    void shouldReturnSuccess_whenGetCustomerWithValidID() throws Exception {
+        // given
+        when(customerService.get(customerID)).thenReturn(customerDTO);
+
+        // when
+        httpRequest.perform(get("/customer/{id}", customerID.toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(customerDTO.getId().toString()))
+                .andExpect(jsonPath("name").value(customerDTO.getName()))
+                .andExpect(jsonPath("document").value(customerDTO.getDocument()))
+                .andExpect(jsonPath("email").value(customerDTO.getEmail()))
+                .andExpect(jsonPath("cellphone").value(customerDTO.getCellphone()))
+                .andExpect(jsonPath("birthdate").value(customerDTO.getBirthdate().toString()))
+                .andExpect(jsonPath("password").value(customerDTO.getPassword()));
+
+        // then
+        verify(customerService, times(1)).get(customerID);
+
+
+    }
+
+    @Test
+    void shouldReturnError_whenGetCustomerWithInvalidID() throws Exception {
+        // when
+        httpRequest.perform(get("/customer/{id}/", "10")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("status_code").value(HttpStatus.BAD_REQUEST.toString()))
+                .andExpect(jsonPath("message").isNotEmpty());
+
+        // then
+        verify(customerService, times(0)).get(customerID);
     }
 }
