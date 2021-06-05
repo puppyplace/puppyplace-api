@@ -1,4 +1,4 @@
-package br.com.puppyplace.core.modules.customer.dto;
+package br.com.puppyplace.core.modules.address.dto;
 
 import br.com.puppyplace.core.commons.enums.StateEnum;
 import lombok.AllArgsConstructor;

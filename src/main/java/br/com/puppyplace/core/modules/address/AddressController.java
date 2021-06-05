@@ -1,7 +1,6 @@
 package br.com.puppyplace.core.modules.address;
 
-import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
-import br.com.puppyplace.core.modules.product.dto.ProductDTO;
+import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

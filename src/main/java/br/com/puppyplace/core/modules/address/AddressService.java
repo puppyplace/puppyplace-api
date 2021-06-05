@@ -1,6 +1,6 @@
 package br.com.puppyplace.core.modules.address;
 
-import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
+import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
