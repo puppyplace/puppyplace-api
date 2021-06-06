@@ -28,14 +28,7 @@ steps:
     isJacocoCoverageReportXML: true
     sqMavenPluginVersionChoice: 'latest'
 
-- task: Maven@3
-  displayName: Building Artifact
+- task: Bash@3
   inputs:
-    mavenPomFile: 'pom.xml'
-    options: '-DskipTests'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+    targetType: 'inline'
+    script: 'mvn clean package'
