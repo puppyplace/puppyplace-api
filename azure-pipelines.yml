@@ -35,4 +35,4 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
     jdkArchitectureOption: 'x64'
-    goals: 'clean install -B -Dmaven.test.skip=true'
+    goals: 'package -B -Dmaven.test.skip=true'
