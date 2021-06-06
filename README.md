@@ -14,7 +14,13 @@ $ docker run --name puppyplace -d -p 5432:5432 -e POSTGRES_PASSWORD=docker postg
 
 Se a sua porta 5432 já estiver em uso, substituir por outra (apenas do lado esquerdo ex: 5431:5432).
 
-3. **Clonar o projeto**
+3. **Adicionar instância do mongodb**
+
+```console
+$ docker run -it --name mongodb -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
+```
+
+4. **Clonar o projeto**
 
 ```console
 git clone git@github.com:puppyplace/puppyplace-api.git
@@ -26,7 +32,7 @@ cd back
 git checkout develop
 ```
 
-4. **Iniciar a aplicação** (a instancia do postgres no docker precisa está de pé)
+5. **Iniciar a aplicação** (a instancia do postgres e mongodb no docker precisa está de pé)
 
 ```console
 mvn clean install
