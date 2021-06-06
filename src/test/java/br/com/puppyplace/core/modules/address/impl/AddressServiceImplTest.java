@@ -80,6 +80,7 @@ public class AddressServiceImplTest {
         assertEquals(addressDTO.getComplement(), addressDTOPersisted.getComplement());
         assertEquals(addressDTO.getZipcode(), addressDTOPersisted.getZipcode());
         assertEquals(addressDTO.getState(), addressDTOPersisted.getState());
+        assertEquals(addressDTO.isPrincipal(), addressDTOPersisted.isPrincipal());
 
         verify(customerService, times(1)).findOne(any(UUID.class));
         verify(addressRepository, times(1)).save(any(Address.class));
@@ -119,6 +120,7 @@ public class AddressServiceImplTest {
         assertEquals(addressDTO.getComplement(), addressDTOPersisted.getComplement());
         assertEquals(addressDTO.getZipcode(), addressDTOPersisted.getZipcode());
         assertEquals(addressDTO.getState(), addressDTOPersisted.getState());
+        assertEquals(addressDTO.isPrincipal(), addressDTOPersisted.isPrincipal());
 
         verify(addressRepository, times(1)).findById(addressID);
         verify(addressRepository, times(1)).save(any(Address.class));
@@ -156,6 +158,7 @@ public class AddressServiceImplTest {
         assertEquals(addressDTO.getComplement(), address.getComplement());
         assertEquals(addressDTO.getZipcode(), address.getZipcode());
         assertEquals(addressDTO.getState(), address.getState());
+        assertEquals(addressDTO.isPrincipal(), address.isPrincipal());
 
         verify(addressRepository, times(1)).findById(addressID);
     }
