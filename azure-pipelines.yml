@@ -29,6 +29,19 @@ steps:
     sqMavenPluginVersionChoice: 'latest'
 
 - task: Bash@3
+  displayName: 'Building application'
   inputs:
     targetType: 'inline'
-    script: 'mvn clean package'
+    script: 'mvn package -Dmaven.test.skip=true'
+
+- task: CopyFiles@2
+  displayName: 'Copying files'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**/*.jar'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
