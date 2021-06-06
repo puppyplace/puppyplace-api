@@ -27,12 +27,15 @@ steps:
     effectivePomSkip: false
     isJacocoCoverageReportXML: true
     sqMavenPluginVersionChoice: 'latest'
+
 - task: Maven@3
-  displayName: 'Build'
-  inputs:    
+  displayName: Building Artifact
+  inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
+    options: '-DskipTests'
+    publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
-    goals: 'package -B -Dmaven.test.skip=true'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
