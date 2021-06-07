@@ -6,7 +6,7 @@ import br.com.puppyplace.core.entities.Address;
 import br.com.puppyplace.core.modules.address.AddressRepository;
 import br.com.puppyplace.core.modules.address.AddressService;
 import br.com.puppyplace.core.modules.customer.CustomerService;
-import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
+import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

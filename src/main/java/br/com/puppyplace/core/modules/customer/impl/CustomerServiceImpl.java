@@ -78,6 +78,14 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    public CustomerDTO get(UUID customerID){
+        var customer = this.findOne(customerID);
+        log.info(">>> Building customer DTO from address entity");
+        var customerDTO = mapper.map(customer, CustomerDTO.class);
+        log.info(">>> Done");
+
+        return customerDTO;
+    }
     public void delete(UUID id) {
         log.info(">>> Get customer to delete.");
 

@@ -1,8 +1,7 @@
 package br.com.puppyplace.core.modules.address;
 
 import br.com.puppyplace.core.commons.enums.StateEnum;
-import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
-import br.com.puppyplace.core.modules.product.dto.ProductDTO;
+import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;

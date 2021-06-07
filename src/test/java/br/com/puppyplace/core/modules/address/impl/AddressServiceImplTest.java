@@ -6,7 +6,7 @@ import br.com.puppyplace.core.entities.Address;
 import br.com.puppyplace.core.entities.Customer;
 import br.com.puppyplace.core.modules.address.AddressRepository;
 import br.com.puppyplace.core.modules.customer.CustomerService;
-import br.com.puppyplace.core.modules.customer.dto.AddressDTO;
+import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

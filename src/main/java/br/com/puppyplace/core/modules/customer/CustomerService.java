@@ -8,6 +8,7 @@ import java.util.UUID;
 public interface CustomerService {
     public CustomerDTO create(CustomerDTO customerDTO);
     public CustomerDTO update(CustomerDTO customerDTO, UUID id);
+    public CustomerDTO get(UUID id);
     public void delete(UUID id);
     public Customer findOne(UUID id);
 }

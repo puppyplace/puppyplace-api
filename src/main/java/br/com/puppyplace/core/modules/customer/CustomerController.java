@@ -43,4 +43,12 @@ public class CustomerController {
         customerService.delete(id);
         log.info(">>> Customer deleted! No response.");
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDTO> get(@PathVariable("id") UUID customerID){
+        log.info(">>> [GET] A new request to get customer with ID {}", customerID);
+        var customerDTO = customerService.get(customerID);
+        log.info(">>> Response: {}", customerDTO);
+        return ResponseEntity.ok(customerDTO);
+    }
 }
