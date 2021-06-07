@@ -1,11 +1,11 @@
-CREATE TABLE public.customer (
-    id uuid NOT NULL,
-    created_at timestamp NULL,
-    updated_at timestamp NULL,
+CREATE TABLE dbo.customer (
+    id uniqueidentifier NOT NULL,
+    created_at datetime NULL,
+    updated_at datetime NULL,
     "name" varchar(255) NULL,
     email varchar(255) NULL,
     "document" varchar(255) NULL,
-    active bool NULL DEFAULT true,
+    active BIT NULL DEFAULT 1,
     birthdate date NOT NULL,
     cellphone varchar(255) NULL,
     "password" varchar(255) NOT NULL,
@@ -14,16 +14,16 @@ CREATE TABLE public.customer (
 );
 
 
-CREATE TABLE public.address (
-    id uuid NOT NULL,
-    created_at timestamp NULL,
-    updated_at timestamp NULL,
+CREATE TABLE dbo.address (
+    id uniqueidentifier NOT NULL,
+    created_at datetime NULL,
+    updated_at datetime NULL,
     street varchar(255) NULL,
     "number" varchar(255) NULL,
     complement varchar(255) NULL,
     zipcode varchar(255) NULL,
     city varchar(255) NULL,
     state varchar(255) NULL,
-    id_customer uuid NULL,
+    id_customer UNIQUEIDENTIFIER NULL,
     CONSTRAINT address_pkey PRIMARY KEY (id)
 );

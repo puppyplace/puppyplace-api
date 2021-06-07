@@ -1,2 +1,2 @@
-ALTER TABLE public.address
-ADD principal bool;
+ALTER TABLE dbo.address
+ADD principal BIT default 0;
