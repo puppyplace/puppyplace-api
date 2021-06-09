@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,6 +27,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public CustomerDTO create(CustomerDTO customerDTO) {
@@ -44,6 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         var customer = mapper.map(customerDTO, Customer.class);
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customer.setCreatedAt(new Date());
         customer.setUpdatedAt(new Date());
 
@@ -73,6 +78,14 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    public CustomerDTO get(UUID customerID){
+        var customer = this.findOne(customerID);
+        log.info(">>> Building customer DTO from address entity");
+        var customerDTO = mapper.map(customer, CustomerDTO.class);
+        log.info(">>> Done");
+
+        return customerDTO;
+    }
     public void delete(UUID id) {
         log.info(">>> Get customer to delete.");
 

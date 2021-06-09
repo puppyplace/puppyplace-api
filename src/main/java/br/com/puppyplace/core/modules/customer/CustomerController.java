@@ -20,17 +20,11 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<CustomerDTO> create(@Valid @RequestBody CustomerDTO customerDTO){
-//        customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
-        log.info(">>> [POST] A new customer received. RequestBody: {}", customerDTO);
+    public void create(@Valid @RequestBody CustomerDTO customerDTO){
         var customer = customerService.create(customerDTO);
-        log.info(">>> Response: {}", customer);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+        log.info(">>> Customer created");
     }
 
     @PutMapping("/{id}")
@@ -48,5 +42,13 @@ public class CustomerController {
         log.info(">>> [DELETE] A new request to delete customer with ID {}", id);
         customerService.delete(id);
         log.info(">>> Customer deleted! No response.");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDTO> get(@PathVariable("id") UUID customerID){
+        log.info(">>> [GET] A new request to get customer with ID {}", customerID);
+        var customerDTO = customerService.get(customerID);
+        log.info(">>> Response: {}", customerDTO);
+        return ResponseEntity.ok(customerDTO);
     }
 }

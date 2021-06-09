@@ -1,5 +1,6 @@
 package br.com.puppyplace.core.modules.customer.dto;
 
+import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

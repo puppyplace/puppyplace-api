@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -40,4 +41,8 @@ public class Address extends AbstractEntity{
     @Column
     @Enumerated(EnumType.STRING)
     private StateEnum state;
+
+    @ColumnDefault("false")
+    @Column(name = "principal")
+    private boolean principal;
 }
