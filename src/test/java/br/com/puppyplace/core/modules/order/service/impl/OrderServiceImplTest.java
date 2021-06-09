@@ -83,7 +83,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void shouldReturnException_whenValidProduct() {
+    void shouldReturnException_whenNotFoundProduct() {
 
         //Given
         var productOrderDTO = easyRandom.nextObject(ProductOrderDTO.class);
@@ -95,7 +95,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void shouldReturnException_whenValidCustomer() {
+    void shouldReturnException_whenNotFoundCustomer() {
 
         //Given
         var orderDTO = orderService.convertToOrderDTO(orderMock);
@@ -107,7 +107,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void shouldReturnException_whenValidAddress() {
+    void shouldReturnException_whenNotFoundAddress() {
 
         //Given
         var orderDTO = orderService.convertToOrderDTO(orderMock);
@@ -133,7 +133,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void shouldReturnException_whenFindOrder(){
+    void shouldReturnException_whenNotFindOrder(){
 
         //Given
         UUID orderId = UUID.randomUUID();

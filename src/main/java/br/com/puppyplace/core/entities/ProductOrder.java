@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product_order", schema = "public")
 @Builder
 @Data
 @AllArgsConstructor

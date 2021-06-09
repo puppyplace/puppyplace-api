@@ -1,13 +1,13 @@
-create table public.order (
-  id uuid not null,
-  created_at timestamp,
-  updated_at timestamp,
+create table order (
+  id UNIQUEIDENTIFIER not null,
+  created_at datetime,
+  updated_at datetime,
   pay_method varchar(255),
   total numeric(19, 2),
   tracking_code varchar(255),
-  id_address uuid not null,
-  id_customer uuid not null,
-  primary key (id)
+  id_address UNIQUEIDENTIFIER not null,
+  id_customer UNIQUEIDENTIFIER not null,
+  primary key (id),
+  FOREIGN KEY (id_customer) REFERENCES customer(id),
+  FOREIGN KEY (id_address) REFERENCES address(id)
 );
-ALTER TABLE public.order ADD FOREIGN KEY (id_customer) REFERENCES public.customer(id);
-ALTER TABLE public.order ADD FOREIGN KEY (id_address) REFERENCES public.address(id);

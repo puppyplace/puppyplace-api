@@ -1,6 +1,6 @@
 package br.com.puppyplace.core.entities;
 
-import br.com.puppyplace.core.commons.enums.PayMethodEnum;
+import br.com.puppyplace.core.commons.enums.PaymentMethodEnum;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "order")
-@Table(name = "order", schema = "public")
 @Builder
 @Data
 @AllArgsConstructor
@@ -26,7 +25,7 @@ public class Order extends AbstractEntity {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private PayMethodEnum payMethod;
+    private PaymentMethodEnum payMethod;
 
     @OneToMany(mappedBy = "order",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductOrder> productOrders = new ArrayList<>();

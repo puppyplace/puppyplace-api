@@ -1,6 +1,6 @@
 package br.com.puppyplace.core.modules.order.dto;
 
-import br.com.puppyplace.core.commons.enums.PayMethodEnum;
+import br.com.puppyplace.core.commons.enums.PaymentMethodEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,7 +34,7 @@ public class OrderDTO implements Serializable {
     private OrderAddressDTO address;
 
     @NotNull(message = "Field payMethod is mandatory")
-    private PayMethodEnum payMethod;
+    private PaymentMethodEnum payMethod;
 
     @NotEmpty(message = "List of Products must be minimum 1")
     @JsonProperty(value = "productOrders")

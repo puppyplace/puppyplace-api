@@ -1,13 +1,13 @@
-CREATE TABLE public.product_order (
-      id uuid NOT NULL,
-      created_at timestamp NULL,
-      updated_at timestamp NULL,
-      quantity int4 NULL,
+CREATE TABLE product_order (
+      id UNIQUEIDENTIFIER NOT NULL,
+      created_at datetime NULL,
+      updated_at datetime NULL,
+      quantity int NULL,
       total_price numeric(19,2) NULL,
       unit_price numeric(19,2) NULL,
-      id_order uuid NOT NULL,
-      id_product uuid NOT NULL,
-      PRIMARY KEY (id)
+      id_order UNIQUEIDENTIFIER NOT NULL,
+      id_product UNIQUEIDENTIFIER NOT NULL,
+      PRIMARY KEY (id),
+      FOREIGN KEY (id_order) REFERENCES order(id),
+      FOREIGN KEY (id_product) REFERENCES product(id)
 );
-ALTER TABLE public.product_order ADD FOREIGN KEY (id_order) REFERENCES public.order(id);
-ALTER TABLE public.product_order ADD FOREIGN KEY (id_product) REFERENCES public.product(id);
