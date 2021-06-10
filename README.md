@@ -15,7 +15,7 @@ $ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Docker10#" -p 1433:1433 --name s
 
 Se a sua porta 1433 já estiver em uso, substituir por outra (apenas do lado esquerdo ex: 1434:1433).
 
-3. Entrar no banco de dados e criar um novo banco chamado PUPPYPLACEDB. (Pode usar o DBEAVER pra fazer isso)
+3. Entrar no banco de dados com database **master** e criar um novo banco chamado PUPPYPLACEDB. (Pode usar o DBEAVER pra fazer isso)
 
 3. **Adicionar instância do mongodb**
 
