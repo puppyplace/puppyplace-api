@@ -8,6 +8,9 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import br.com.puppyplace.core.modules.product.pojos.Detail;
+import br.com.puppyplace.core.modules.product.pojos.Specification;
+import br.com.puppyplace.core.modules.product.pojos.Variant;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -38,11 +41,8 @@ public class ProductDTO implements Serializable {
     private Float price;
 
     @DecimalMin("0.01")
-    @JsonProperty("promotional_price")
-    private Float promotionalPrice;
-
-    @NotNull
-    private Integer stock;
+    @JsonProperty("promotional_percent")
+    private Float promotionalPercent;
 
     @JsonProperty("avatar_url")
     private String avatarUrl;
@@ -52,10 +52,15 @@ public class ProductDTO implements Serializable {
     private List<UUID> idCategories;
 
     @NotEmpty
-    private String specifications;
+    @JsonProperty("specifications")
+    private List<Specification> specifications;
 
     @NotEmpty
-    private String unit;
+    @JsonProperty("variant")
+    private List<Variant> variant;
+
+    @JsonProperty("details")
+    private List<Detail> details;
 
     @JsonProperty("product_code")
     private String productCode;

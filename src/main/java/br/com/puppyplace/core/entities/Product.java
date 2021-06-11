@@ -4,19 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import br.com.puppyplace.core.modules.product.converters.JSONArrayConverter;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
@@ -24,6 +18,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.json.JSONArray;
 
 @Entity(name = "product")
 @Builder
@@ -32,6 +27,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Where(clause="deleted=false")
+@TypeDef(
+        name = "json",
+        typeClass = JsonType.class
+)
 public class Product extends AbstractEntity {
 
     @Id
@@ -47,11 +46,8 @@ public class Product extends AbstractEntity {
     @Column(nullable = false)
     private Float price;
 
-    @Column(name = "promotional_price")
-    private Float promotionalPrice;
-
-    @Column(nullable = false)
-    private Integer stock;
+    @Column(name = "promotional_percent")
+    private Float promotionalPercent;
 
     @Column(name = "avatar_url")
     private String avatarUrl;
@@ -64,11 +60,17 @@ public class Product extends AbstractEntity {
     @JoinColumn(name = "id_partner")    
     private Partner partner;
 
-    @Column
-    private String specifications;
+    @Column(columnDefinition = "nvarchar")
+    @Convert(converter= JSONArrayConverter.class)
+    private JSONArray specifications;
 
-    @Column
-    private String unit;
+    @Column(columnDefinition = "nvarchar")
+    @Convert(converter= JSONArrayConverter.class)
+    private JSONArray details;
+
+    @Column(columnDefinition = "nvarchar")
+    @Convert(converter= JSONArrayConverter.class)
+    private JSONArray variant;
 
     @Column(name = "product_code", unique = true)
     private String productCode;

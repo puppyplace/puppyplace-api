@@ -60,7 +60,7 @@ class ProductControllerTest {
 		this.easyRandom = new EasyRandom();
 		this.productDTO = easyRandom.nextObject(ProductDTO.class);
 		this.invalidProductDTO = ProductDTO.builder().title("").description("").price(Float.valueOf(0))
-		.promotionalPrice(Float.valueOf(0)).idCategories(null).unit("").build();
+		.promotionalPercent(Float.valueOf(0)).idCategories(null).build();
 	}
 
 	@Test
