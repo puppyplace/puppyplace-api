@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "order")
+@Entity(name = "customer_order")
 @Builder
 @Data
 @AllArgsConstructor

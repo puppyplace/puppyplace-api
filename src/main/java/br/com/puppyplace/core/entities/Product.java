@@ -4,17 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
@@ -56,8 +46,11 @@ public class Product extends AbstractEntity {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    @JoinTable(name="category_product")
+    @ManyToMany
+    @JoinTable(
+            name = "category_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)

@@ -1,4 +1,4 @@
-create table dbo."order" (
+create table dbo.customer_order (
      id UNIQUEIDENTIFIER not null,
      created_at datetime null,
      updated_at datetime null,
