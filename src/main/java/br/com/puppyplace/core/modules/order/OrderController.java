@@ -45,7 +45,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/customer/{id}")
-    public ResponseEntity<Page<OrderDTO>> getOrderByCustomer(
+    public ResponseEntity<Page<OrderDTO>> listOrdersByCustomer(
             @PathVariable("id") UUID id,
             @Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
             @Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page

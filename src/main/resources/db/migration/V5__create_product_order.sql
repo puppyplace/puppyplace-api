@@ -8,6 +8,6 @@ CREATE TABLE dbo.product_order (
    id_order UNIQUEIDENTIFIER NOT NULL,
    id_product UNIQUEIDENTIFIER NOT NULL,
    PRIMARY KEY (id),
-   FOREIGN KEY (id_order) REFERENCES "order"(id),
+   FOREIGN KEY (id_order) REFERENCES customer_order(id),
    FOREIGN KEY (id_product) REFERENCES product(id)
 );
