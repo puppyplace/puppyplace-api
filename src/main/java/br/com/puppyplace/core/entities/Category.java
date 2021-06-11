@@ -3,13 +3,7 @@ package br.com.puppyplace.core.entities;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +30,6 @@ public class Category extends AbstractEntity {
     @Column
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories")
     private List<Product> products;
-
 }

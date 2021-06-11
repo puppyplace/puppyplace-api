@@ -52,8 +52,11 @@ public class Product extends AbstractEntity {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    @JoinTable(name="category_product")
+    @ManyToMany
+    @JoinTable(
+            name = "category_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
