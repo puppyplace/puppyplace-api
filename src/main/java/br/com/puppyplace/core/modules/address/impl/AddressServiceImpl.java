@@ -93,7 +93,7 @@ public class AddressServiceImpl implements AddressService {
         return pageOfProductsDTO;
     }
 
-    private Address findOne(UUID addressID){
+    private Address findOne(UUID addressID) {
         log.info(">>> Starting find address with ID {}", addressID);
 
         return addressRepository.findById(addressID).orElseThrow(() -> {

@@ -80,7 +80,7 @@ class ProductServiceImplTest {
         assertEquals(productDTO.getId(), product.getId());
         assertEquals(productDTO.getDescription(), product.getDescription());
         assertEquals(productDTO.getProductCode(), product.getProductCode());
-        assertEquals(productDTO.getPrice(), product.getPrice());
+        assertEquals(productDTO.getVariants(), product.getVariants());
         assertEquals(productDTO.getAvatarUrl(), product.getAvatarUrl());
 
         verify(productRepository, times(1)).findById(productID);
@@ -111,7 +111,6 @@ class ProductServiceImplTest {
         assertEquals(productDTO.getId(), productDTOPersited.getId());
         assertEquals(productDTO.getDescription(), productDTOPersited.getDescription());
         assertEquals(productDTO.getProductCode(), productDTOPersited.getProductCode());
-        assertEquals(productDTO.getPrice(), productDTOPersited.getPrice());
         assertEquals(productDTO.getAvatarUrl(), productDTOPersited.getAvatarUrl());
 
         verify(productRepository, times(1)).save(any(Product.class));
@@ -145,7 +144,6 @@ class ProductServiceImplTest {
         assertEquals(productDTO.getId(), productDTOPersited.getId());
         assertEquals(productDTO.getDescription(), productDTOPersited.getDescription());
         assertEquals(productDTO.getProductCode(), productDTOPersited.getProductCode());
-        assertEquals(productDTO.getPrice(), productDTOPersited.getPrice());
         assertEquals(productDTO.getAvatarUrl(), productDTOPersited.getAvatarUrl());
 
         verify(productRepository, times(1)).save(any(Product.class));

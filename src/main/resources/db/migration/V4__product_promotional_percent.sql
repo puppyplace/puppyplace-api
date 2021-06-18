@@ -1,1 +1,0 @@
-EXEC sp_rename 'dbo.product.promotional_price', 'promotional_percent', 'COLUMN';

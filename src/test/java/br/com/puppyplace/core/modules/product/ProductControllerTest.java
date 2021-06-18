@@ -59,8 +59,7 @@ class ProductControllerTest {
 	void init(){
 		this.easyRandom = new EasyRandom();
 		this.productDTO = easyRandom.nextObject(ProductDTO.class);
-		this.invalidProductDTO = ProductDTO.builder().title("").description("").price(Float.valueOf(0))
-		.promotionalPercent(Float.valueOf(0)).idCategories(null).build();
+		this.invalidProductDTO = ProductDTO.builder().title("").description("").idCategories(null).build();
 	}
 
 	@Test
@@ -74,10 +73,8 @@ class ProductControllerTest {
 						post("/product").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(productDTO)))
 				.andExpect(status().isCreated()).andExpect(jsonPath("id").value(productDTO.getId().toString()))
 				.andExpect(jsonPath("description").value(productDTO.getDescription()))
-				.andExpect(jsonPath("price").value(productDTO.getPrice().toString()))
 				.andExpect(jsonPath("avatar_url").value(productDTO.getAvatarUrl().toString()))
 				.andExpect(jsonPath("product_code").value(productDTO.getProductCode().toString()))
-				.andExpect(jsonPath("isbn_code").value(productDTO.getIsbnCode().toString()))
 				.andExpect(jsonPath("title").value(productDTO.getTitle()));
 
 		// then
@@ -135,10 +132,8 @@ class ProductControllerTest {
 		httpRequest.perform(get("/product/{id}", UUID.randomUUID().toString()).accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("description").value(productDTO.getDescription()))
-			.andExpect(jsonPath("price").value(productDTO.getPrice().toString()))
 			.andExpect(jsonPath("avatar_url").value(productDTO.getAvatarUrl().toString()))
 			.andExpect(jsonPath("product_code").value(productDTO.getProductCode().toString()))
-			.andExpect(jsonPath("isbn_code").value(productDTO.getIsbnCode().toString()))
 			.andExpect(jsonPath("title").value(productDTO.getTitle()));
 
 			// then
@@ -169,10 +164,8 @@ class ProductControllerTest {
 				.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(productDTO)))
 				.andExpect(status().isOk()).andExpect(jsonPath("id").value(productDTO.getId().toString()))
 				.andExpect(jsonPath("description").value(productDTO.getDescription()))
-				.andExpect(jsonPath("price").value(productDTO.getPrice().toString()))
 				.andExpect(jsonPath("avatar_url").value(productDTO.getAvatarUrl().toString()))
 				.andExpect(jsonPath("product_code").value(productDTO.getProductCode().toString()))
-				.andExpect(jsonPath("isbn_code").value(productDTO.getIsbnCode().toString()))
 				.andExpect(jsonPath("title").value(productDTO.getTitle()));
 
 		// then
