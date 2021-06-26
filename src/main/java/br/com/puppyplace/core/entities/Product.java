@@ -1,12 +1,18 @@
 package br.com.puppyplace.core.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.*;
 
+import br.com.puppyplace.core.modules.product.converters.JSONArrayConverter;
+import br.com.puppyplace.core.modules.product.dto.DetailDTO;
+import br.com.puppyplace.core.modules.product.dto.SpecificationDTO;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
@@ -22,6 +28,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Where(clause="deleted=false")
+@TypeDef(
+        name = "json",
+        typeClass = JsonType.class
+)
 public class Product extends AbstractEntity {
 
     @Id
@@ -34,15 +44,6 @@ public class Product extends AbstractEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private Float price;
-
-    @Column(name = "promotional_price")
-    private Float promotionalPrice;
-
-    @Column(nullable = false)
-    private Integer stock;
-
     @Column(name = "avatar_url")
     private String avatarUrl;
 
@@ -53,26 +54,29 @@ public class Product extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
+    @OneToMany(mappedBy = "product",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Variant> variants = new ArrayList<>();
+
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_partner")    
+    @JoinColumn(name = "id_partner")
     private Partner partner;
 
-    @Column
-    private String specifications;
+    @Column(columnDefinition = "nvarchar")
+    @Convert(converter= JSONArrayConverter.class)
+    private List<SpecificationDTO> specifications;
 
-    @Column
-    private String unit;
+    @Column(columnDefinition = "nvarchar")
+    @Convert(converter= JSONArrayConverter.class)
+    private List<DetailDTO> details;
 
     @Column(name = "product_code", unique = true)
     private String productCode;
 
-    @Column(name = "isbn_code")
-    private String isbnCode;
-    
     @ColumnDefault("false")
     @Column(name = "deleted")
     private boolean deleted;
 
     @Column(name = "deleted_at")
 	protected Date deletedAt;
+
 }

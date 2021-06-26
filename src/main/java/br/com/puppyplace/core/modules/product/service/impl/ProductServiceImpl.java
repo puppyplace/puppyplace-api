@@ -1,8 +1,14 @@
 package br.com.puppyplace.core.modules.product.service.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import br.com.puppyplace.core.entities.Category;
+import br.com.puppyplace.core.entities.ProductOrder;
+import br.com.puppyplace.core.modules.category.CategoryRepository;
+import br.com.puppyplace.core.modules.order.dto.ProductOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -47,10 +53,15 @@ public class ProductServiceImpl implements ProductService {
             }
 
             var product = buildProductFromDTO.execute(productDTO);
+
+            product.setCreatedAt(new Date());
+            product.setUpdatedAt(new Date());
+
             productRepository.save(product);
             productDTO.setId(product.getId());
 
             log.info(">>> Entity persisted!");
+
             return productDTO;
         } catch (DataIntegrityViolationException e) {
             log.error(">>> An exception occurred! {}", e.getMessage());
@@ -94,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
         return pageOfProductsDTO;
     }
 
-    private Product findOne(UUID id) {
+    public Product findOne(UUID id) {
         log.info(">>> Starting find product with ID {}", id);
 
         return productRepository.findById(id).orElseThrow(() -> {
@@ -112,4 +123,6 @@ public class ProductServiceImpl implements ProductService {
         log.info(">>> Checking if new product has pre inputed product code");
         return productDTO.getProductCode() == null || productDTO.getProductCode().isEmpty();
     }
+
+
 }
