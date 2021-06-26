@@ -8,6 +8,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import br.com.puppyplace.core.entities.Variant;
+import br.com.puppyplace.core.modules.variant.dto.VariantDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -33,17 +35,6 @@ public class ProductDTO implements Serializable {
     @NotEmpty
     private String title;
 
-    @NotNull
-    @DecimalMin("0.01")
-    private Float price;
-
-    @DecimalMin("0.01")
-    @JsonProperty("promotional_price")
-    private Float promotionalPrice;
-
-    @NotNull
-    private Integer stock;
-
     @JsonProperty("avatar_url")
     private String avatarUrl;
 
@@ -52,15 +43,13 @@ public class ProductDTO implements Serializable {
     private List<UUID> idCategories;
 
     @NotEmpty
-    private String specifications;
+    private List<SpecificationDTO> specifications;
 
-    @NotEmpty
-    private String unit;
+    private List<VariantDTO> variants;
+
+    private List<DetailDTO> details;
 
     @JsonProperty("product_code")
     private String productCode;
 
-    @JsonProperty("isbn_code")
-    private String isbnCode;
-    
 }
