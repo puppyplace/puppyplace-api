@@ -4,6 +4,7 @@ import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.ResourceAlreadyInUseException;
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 import br.com.puppyplace.core.entities.Customer;
+import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
 import br.com.puppyplace.core.modules.customer.CustomerRepository;
 import br.com.puppyplace.core.modules.customer.CustomerService;
 import br.com.puppyplace.core.modules.customer.dto.CustomerDTO;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -105,5 +108,18 @@ public class CustomerServiceImpl implements CustomerService {
             log.error(">>> Customer not found with ID {}", id);
             throw new ResourceNotFoundException("No customer found with ID " + id.toString());
         });
+    }
+
+
+    public Page<CustomerDTO> list(Pageable pageable) {
+        log.info(">>> Searching categories list from database");
+
+        var pageOfCustomers = customerRepository.findAll(pageable);
+        var pageOfCustomersDTO = pageOfCustomers.map(
+                customer -> mapper.map(customer, CustomerDTO.class)
+        );
+
+        log.info(">>> Done");
+        return pageOfCustomersDTO;
     }
 }

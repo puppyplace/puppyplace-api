@@ -1,8 +1,11 @@
 package br.com.puppyplace.core.modules.customer;
 
+import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
 import br.com.puppyplace.core.modules.customer.dto.CustomerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.UUID;
 @RestController
 @RequestMapping("/customer")
@@ -45,10 +49,25 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "${base-frontend-url}", maxAge = 3600)
     public ResponseEntity<CustomerDTO> get(@PathVariable("id") UUID customerID){
         log.info(">>> [GET] A new request to get customer with ID {}", customerID);
         var customerDTO = customerService.get(customerID);
         log.info(">>> Response: {}", customerDTO);
         return ResponseEntity.ok(customerDTO);
     }
+
+    @GetMapping
+    public ResponseEntity<Page<CustomerDTO>> list(
+            @Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
+            @Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page){
+        var pageable = PageRequest.of(page, size);
+
+        log.info(">>> [GET] A new request to get list of categories in page {} with size {}", page, size);
+        var pageOfCustomersDTO = customerService.list(pageable);
+        log.info(">>> Response: {}", pageOfCustomersDTO);
+
+        return ResponseEntity.ok(pageOfCustomersDTO);
+    }
+
 }

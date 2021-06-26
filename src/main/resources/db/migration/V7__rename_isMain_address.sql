@@ -1,0 +1,1 @@
+EXEC sp_rename 'dbo.address.principal', 'is_main', 'COLUMN';
