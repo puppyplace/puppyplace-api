@@ -21,13 +21,16 @@ public class Customer extends AbstractEntity{
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column
     private String document;
 
-    @Column(nullable = false)
+    @Column
     private String email;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -36,11 +39,8 @@ public class Customer extends AbstractEntity{
     @Column
     private String cellphone;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate birthdate;
-
-    @Column(nullable = false)
-    private String password;
 
     @ColumnDefault("true")
     @Column(name = "active")

@@ -1,0 +1,1 @@
+EXEC sp_rename 'dbo.customer.name', 'first_name', 'COLUMN';

@@ -67,12 +67,11 @@ public class CustomerServiceImplTest {
         // then
         assertNotNull(customerDTOPersisted);
         assertEquals(customerDTO.getId(), customerDTOPersisted.getId());
-        assertEquals(customerDTO.getName(), customerDTOPersisted.getName());
+        assertEquals(customerDTO.getFirstName(), customerDTOPersisted.getFirstName());
         assertEquals(customerDTO.getEmail(), customerDTOPersisted.getEmail());
         assertEquals(customerDTO.getDocument(), customerDTOPersisted.getDocument());
         assertEquals(customerDTO.getCellphone(), customerDTOPersisted.getCellphone());
         assertEquals(customerDTO.getBirthdate(), customerDTOPersisted.getBirthdate());
-        assertEquals(customerDTO.getPassword(), customerDTOPersisted.getPassword());
 
         verify(customerRepository, times(1)).save(any(Customer.class));
     }
@@ -113,7 +112,7 @@ public class CustomerServiceImplTest {
         // then
         assertNotNull(customerDTOPersisted);
         assertEquals(customerDTO.getId(), customerDTOPersisted.getId());
-        assertEquals(customerDTO.getName(), customerDTOPersisted.getName());
+        assertEquals(customerDTO.getFirstName(), customerDTOPersisted.getFirstName());
         assertEquals(customerDTO.getEmail(), customerDTOPersisted.getEmail());
         assertEquals(customerDTO.getDocument(), customerDTOPersisted.getDocument());
         assertEquals(customerDTO.getCellphone(), customerDTOPersisted.getCellphone());
