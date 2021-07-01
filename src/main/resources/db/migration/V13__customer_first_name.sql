@@ -1,0 +1,1 @@
+alter table dbo.customer alter column birthdate date NULL;
