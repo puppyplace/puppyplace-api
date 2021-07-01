@@ -1,1 +1,1 @@
-ALTER TABLE dbo.customer DROP COLUMN "password";
+alter table dbo.customer alter column birthdate date NULL;

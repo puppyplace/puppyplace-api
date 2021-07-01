@@ -54,12 +54,11 @@ class CustomerControllerTest {
         this.customerDTO.setBirthdate(LocalDate.of(2000, 12, 01));
         this.customerID = UUID.randomUUID();
         this.invalidCustomerDTO = CustomerDTO.builder()
-                                    .name("")
+                                    .firstName("")
                                     .email("")
                                     .document("")
                                     .cellphone("")
                                     .birthdate(LocalDate.now())
-                                    .password("")
                                     .build();
     }
 
@@ -126,7 +125,7 @@ class CustomerControllerTest {
         httpRequest.perform(put("/customer/{id}", UUID.randomUUID().toString())
                 .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(customerDTO)))
                 .andExpect(status().isOk()).andExpect(jsonPath("id").value(customerDTO.getId().toString()))
-                .andExpect(jsonPath("name").value(customerDTO.getName()))
+                .andExpect(jsonPath("first_name").value(customerDTO.getFirstName()))
                 .andExpect(jsonPath("document").value(customerDTO.getDocument()))
                 .andExpect(jsonPath("email").value(customerDTO.getEmail()))
                 .andExpect(jsonPath("cellphone").value(customerDTO.getCellphone()))
@@ -183,12 +182,11 @@ class CustomerControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(customerDTO.getId().toString()))
-                .andExpect(jsonPath("name").value(customerDTO.getName()))
+                .andExpect(jsonPath("first_name").value(customerDTO.getFirstName()))
                 .andExpect(jsonPath("document").value(customerDTO.getDocument()))
                 .andExpect(jsonPath("email").value(customerDTO.getEmail()))
                 .andExpect(jsonPath("cellphone").value(customerDTO.getCellphone()))
-                .andExpect(jsonPath("birthdate").value(customerDTO.getBirthdate().toString()))
-                .andExpect(jsonPath("password").value(customerDTO.getPassword()));
+                .andExpect(jsonPath("birthdate").value(customerDTO.getBirthdate().toString()));
 
         // then
         verify(customerService, times(1)).get(customerID);

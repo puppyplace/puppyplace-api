@@ -2,6 +2,8 @@ package br.com.puppyplace.core.modules.customer.dto;
 
 import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,11 +28,13 @@ public class CustomerDTO implements Serializable {
 
     private UUID id;
 
-    @NotEmpty(message = "Name could not be empty")
-    private String name;
+    @JsonProperty("first_name")
+    private String firstName;
+
+    @JsonProperty("last_name")
+    private String lastName;
 
     @CPF
-    @NotEmpty(message = "Document could not be empty")
     private String document;
 
     @Email(message = "It should be a valid email")
@@ -43,9 +47,6 @@ public class CustomerDTO implements Serializable {
     @Past
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birthdate;
-
-    @NotEmpty
-    private String password;
 
     private boolean active;
 }

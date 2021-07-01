@@ -19,6 +19,7 @@ import java.util.UUID;
 @RequestMapping("/customer")
 @Validated
 @Slf4j
+@CrossOrigin(origins = "${base-frontend-url}", maxAge = 3600)
 public class CustomerController {
 
     @Autowired
@@ -49,10 +50,18 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "${base-frontend-url}", maxAge = 3600)
     public ResponseEntity<CustomerDTO> get(@PathVariable("id") UUID customerID){
         log.info(">>> [GET] A new request to get customer with ID {}", customerID);
         var customerDTO = customerService.get(customerID);
+        log.info(">>> Response: {}", customerDTO);
+        return ResponseEntity.ok(customerDTO);
+    }
+
+    @GetMapping("/email/{email}")
+    @CrossOrigin(origins = "${base-frontend-url}", maxAge = 3600)
+    public ResponseEntity<CustomerDTO> findByEmail(@PathVariable("email") String email){
+        log.info(">>> [GET] A new request to get customer with email {}", email);
+        var customerDTO = customerService.findByEmail(email);
         log.info(">>> Response: {}", customerDTO);
         return ResponseEntity.ok(customerDTO);
     }

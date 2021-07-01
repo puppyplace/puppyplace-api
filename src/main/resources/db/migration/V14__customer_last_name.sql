@@ -1,1 +1,1 @@
-EXEC sp_rename 'dbo.customer.name', 'first_name', 'COLUMN';
+ALTER TABLE dbo.customer ADD last_name varchar(255) NULL;

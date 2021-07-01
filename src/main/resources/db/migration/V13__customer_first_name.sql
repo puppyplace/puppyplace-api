@@ -1,1 +1,1 @@
-alter table dbo.customer alter column birthdate date NULL;
+EXEC sp_rename 'dbo.customer.name', 'first_name', 'COLUMN';
