@@ -43,6 +43,6 @@ public class Address extends AbstractEntity{
     private StateEnum state;
 
     @ColumnDefault("false")
-    @Column(name = "principal")
-    private boolean principal;
+    @Column(name = "is_main")
+    private boolean isMain;
 }

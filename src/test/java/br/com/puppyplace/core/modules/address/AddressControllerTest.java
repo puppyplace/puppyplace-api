@@ -74,7 +74,7 @@ public class AddressControllerTest {
             .andExpect(jsonPath("zipcode").value(addressDTO.getZipcode()))
             .andExpect(jsonPath("city").value(addressDTO.getCity()))
             .andExpect(jsonPath("state").value(addressDTO.getState().toString()))
-            .andExpect(jsonPath("principal").value(addressDTO.isPrincipal()));
+            .andExpect(jsonPath("principal").value(addressDTO.isMain()));
 
         // then
         verify(addressService, times(1)).create(customerID, addressDTO);
@@ -122,7 +122,7 @@ public class AddressControllerTest {
                 .andExpect(jsonPath("zipcode").value(addressDTO.getZipcode()))
                 .andExpect(jsonPath("city").value(addressDTO.getCity()))
                 .andExpect(jsonPath("state").value(addressDTO.getState().toString()))
-                .andExpect(jsonPath("principal").value(addressDTO.isPrincipal()));
+                .andExpect(jsonPath("principal").value(addressDTO.isMain()));
 
         // then
         verify(addressService, times(1)).update(customerID, addressID, addressDTO);
@@ -181,7 +181,7 @@ public class AddressControllerTest {
                 .andExpect(jsonPath("zipcode").value(addressDTO.getZipcode()))
                 .andExpect(jsonPath("city").value(addressDTO.getCity()))
                 .andExpect(jsonPath("state").value(addressDTO.getState().toString()))
-                .andExpect(jsonPath("principal").value(addressDTO.isPrincipal()));
+                .andExpect(jsonPath("principal").value(addressDTO.isMain()));
 
         // then
         verify(addressService, times(1)).get(customerID, addressID);
