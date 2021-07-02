@@ -1,6 +1,7 @@
 package br.com.puppyplace.core.modules.address.dto;
 
 import br.com.puppyplace.core.commons.enums.StateEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +37,6 @@ public class AddressDTO implements Serializable {
 
     private StateEnum state;
 
-    private boolean principal;
+    @JsonProperty("is_main")
+    private boolean isMain;
 }

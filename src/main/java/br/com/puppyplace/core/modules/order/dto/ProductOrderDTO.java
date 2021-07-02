@@ -21,6 +21,9 @@ public class ProductOrderDTO implements Serializable {
     @NotNull(message = "Field ID Product is mandatory")
     private UUID productId;
 
+    @NotNull(message = "Field ID Variant is mandatory")
+    private UUID variantId;
+
     @Positive
     @DecimalMin(value = "0.0", inclusive = false, message = "Field unitPrice is mandatory")
     private Float unitPrice;

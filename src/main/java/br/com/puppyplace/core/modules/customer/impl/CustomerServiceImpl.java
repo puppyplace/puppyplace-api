@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +36,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO create(CustomerDTO customerDTO) {
         var referenceDate = LocalDate.now();
-        var birthday = customerDTO.getBirthdate();
-        var period = Period.between(birthday, referenceDate).getYears();
-
-        if (period < 18) {
-            throw new BusinessException("Customer must be greather than 18 years old");
-        }
+//        var birthday = customerDTO.getBirthdate();
+//        var period = Period.between(birthday, referenceDate).getYears();
+//
+//        if (period < 18) {
+//            throw new BusinessException("Customer must be greather than 18 years old");
+//        }
 
         var existingCustomer = customerRepository.findByDocument(customerDTO.getDocument());
         if (existingCustomer.isPresent()) {
@@ -48,7 +50,6 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         var customer = mapper.map(customerDTO, Customer.class);
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customer.setCreatedAt(new Date());
         customer.setUpdatedAt(new Date());
 
@@ -62,10 +63,11 @@ public class CustomerServiceImpl implements CustomerService {
         try {
             log.info(">>> Starting update entity");
 
-            this.findOne(id);
+            Customer storageCustomer = this.findOne(id);
             var customer = mapper.map(customerDTO, Customer.class);
             customer.setId(id);
             customer.setUpdatedAt(new Date());
+            customer.setCreatedAt(storageCustomer.getCreatedAt());
 
             customerRepository.save(customer);
 
@@ -105,5 +107,31 @@ public class CustomerServiceImpl implements CustomerService {
             log.error(">>> Customer not found with ID {}", id);
             throw new ResourceNotFoundException("No customer found with ID " + id.toString());
         });
+    }
+
+    @Override
+    public CustomerDTO findByEmail(String email) {
+        log.info(">>> Starting find customer with email {}", email);
+
+         var customer = customerRepository.findByEmail(email).orElseThrow(() -> {
+            log.error(">>> Customer not found with email {}", email);
+            throw new ResourceNotFoundException("No customer found with email " + email);
+        });
+
+        var customerDTO = mapper.map(customer, CustomerDTO.class);
+
+        return customerDTO;
+    }
+
+    public Page<CustomerDTO> list(Pageable pageable) {
+        log.info(">>> Searching categories list from database");
+
+        var pageOfCustomers = customerRepository.findAll(pageable);
+        var pageOfCustomersDTO = pageOfCustomers.map(
+                customer -> mapper.map(customer, CustomerDTO.class)
+        );
+
+        log.info(">>> Done");
+        return pageOfCustomersDTO;
     }
 }
