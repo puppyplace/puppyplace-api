@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequestMapping("/customer")
 @Validated
 @Slf4j
-@CrossOrigin(origins = "${base-frontend-url}", maxAge = 3600)
+@CrossOrigin
 public class CustomerController {
 
     @Autowired
@@ -58,7 +58,6 @@ public class CustomerController {
     }
 
     @GetMapping("/email/{email}")
-    @CrossOrigin(origins = "${base-frontend-url}", maxAge = 3600)
     public ResponseEntity<CustomerDTO> findByEmail(@PathVariable("email") String email){
         log.info(">>> [GET] A new request to get customer with email {}", email);
         var customerDTO = customerService.findByEmail(email);

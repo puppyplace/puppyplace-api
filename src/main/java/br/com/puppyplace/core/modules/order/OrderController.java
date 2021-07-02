@@ -21,6 +21,7 @@ import java.util.UUID;
 @Validated
 @Slf4j
 @AllArgsConstructor
+@CrossOrigin
 public class OrderController {
 
     private final OrderService orderService;
@@ -30,8 +31,7 @@ public class OrderController {
         log.info(">>> [POST] A new Order to create received. RequestBody: {}", order);
         var orderDTO =
                 Optional.ofNullable(order)
-                .map(orderService::create)
-                ;
+                .map(orderService::create);
         log.info(">>> Response createOder: {}", orderDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderDTO);
     }
