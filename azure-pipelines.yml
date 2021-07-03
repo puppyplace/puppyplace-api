@@ -18,7 +18,7 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     codeCoverageToolOption: 'JaCoCo'
-    codeCoverageFailIfEmpty: true
+    codeCoverageFailIfEmpty: false
     codeCoverageRestoreOriginalPomXml: true
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
