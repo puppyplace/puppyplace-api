@@ -35,6 +35,9 @@ public class AddressDTO implements Serializable {
     @NotEmpty
     private String city;
 
+    @NotEmpty
+    private String district;
+
     private StateEnum state;
 
     @JsonProperty("is_main")

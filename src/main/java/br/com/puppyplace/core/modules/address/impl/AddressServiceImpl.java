@@ -67,10 +67,27 @@ public class AddressServiceImpl implements AddressService {
         }
     }
 
-    public void delete(UUID customerID, UUID addressID) {
+    public UUID delete(UUID customerID, UUID addressID) {
         log.info(">>> Get address to delete.");
         var address = this.findOne(addressID);
         addressRepository.delete(address);
+
+        return addressID;
+    }
+
+    public UUID makeMain(UUID customerID, UUID addressID) {
+        log.info(">>> Get address to make main.");
+        var addresses = addressRepository.findByCustomerId(customerID);
+        addresses.stream().forEach(address -> {
+            if ((address.getId().equals(addressID))) {
+                address.setMain(true);
+            } else {
+                address.setMain(false);
+            }
+        });
+        addressRepository.saveAll(addresses);
+
+        return addressID;
     }
 
     public AddressDTO get(UUID customerID, UUID addressID){

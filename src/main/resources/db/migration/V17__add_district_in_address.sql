@@ -1,0 +1,1 @@
+ALTER TABLE dbo.address ADD district varchar(255) NULL;

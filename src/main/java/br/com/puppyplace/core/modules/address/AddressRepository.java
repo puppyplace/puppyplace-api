@@ -10,5 +10,6 @@ import java.util.UUID;
 
 public interface AddressRepository extends CrudRepository<Address, UUID> {
     Page<Address> findByCustomerId(UUID customerID, Pageable pageable);
+    List<Address> findByCustomerId(UUID customerID);
 }
 

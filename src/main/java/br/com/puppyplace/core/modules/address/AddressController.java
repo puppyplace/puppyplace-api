@@ -44,12 +44,25 @@ public class AddressController {
         return ResponseEntity.ok(addressDTOUpdated);
     }
 
+    @PatchMapping("/customer/{customer_id}/address/{id}")
+    public ResponseEntity<UUID> makeMain(
+            @PathVariable("customer_id") UUID customerID,
+            @PathVariable("id") UUID addressID) {
+        log.info(">>> [PUT] A new request to update address with ID {}", addressID);
+       var addressMainID= addressService.makeMain(customerID, addressID);
+        log.info(">>> Response: {}", addressMainID);
+
+        return ResponseEntity.ok(addressMainID);
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/customer/{customer_id}/address/{id}")
-    public void delete(@PathVariable("customer_id") UUID customerID, @PathVariable("id") UUID addressID){
+    public ResponseEntity<UUID> delete(@PathVariable("customer_id") UUID customerID, @PathVariable("id") UUID addressID){
         log.info(">>> [DELETE] A new request to delete address with ID {}", addressID);
-        addressService.delete(customerID, addressID);
+        var addressIDRemoved = addressService.delete(customerID, addressID);
         log.info(">>> Address deleted! No response.");
+
+        return ResponseEntity.ok(addressIDRemoved);
     }
 
     @GetMapping("/customer/{customer_id}/address/{id}")
