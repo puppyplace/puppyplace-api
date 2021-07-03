@@ -7,9 +7,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 public interface AddressService {
-    public AddressDTO create(UUID customerID, AddressDTO addressDTO);
-    public AddressDTO update(UUID customerID, UUID id, AddressDTO addressDTO);
-    public void delete(UUID customerID, UUID addressID);
-    public AddressDTO get(UUID customerID, UUID addressID);
-    public Page<AddressDTO> list(Pageable pageable, UUID customerID);
+     AddressDTO create(UUID customerID, AddressDTO addressDTO);
+     AddressDTO update(UUID customerID, UUID id, AddressDTO addressDTO);
+     UUID delete(UUID customerID, UUID addressID);
+     AddressDTO get(UUID customerID, UUID addressID);
+     Page<AddressDTO> list(Pageable pageable, UUID customerID);
+     UUID makeMain(UUID customerID, UUID addressID);
 }

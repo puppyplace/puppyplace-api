@@ -39,6 +39,9 @@ public class Address extends AbstractEntity{
     private String city;
 
     @Column
+    private String district;
+
+    @Column
     @Enumerated(EnumType.STRING)
     private StateEnum state;
 
