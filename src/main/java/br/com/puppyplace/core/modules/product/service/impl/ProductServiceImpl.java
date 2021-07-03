@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductDTO create(ProductDTO productDTO) {
-        try {            
+        try {
             if(productCodeIsEmpty(productDTO)){
                 generateProductCode(productDTO);
             }
@@ -58,6 +58,9 @@ public class ProductServiceImpl implements ProductService {
             product.setUpdatedAt(new Date());
 
             productRepository.save(product);
+
+
+
             productDTO.setId(product.getId());
 
             log.info(">>> Entity persisted!");
@@ -70,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductDTO update(ProductDTO productDTO, UUID id) {
-        try {  
+        try {
             log.info(">>> Starting update entity");
 
             this.findOne(id);
@@ -97,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
 
     public Page<ProductDTO> list(Pageable pageable) {
         log.info(">>> Searching products listt from database");
-        
+
         var pageOfProducts = productRepository.findAll(pageable);
         var pageOfProductsDTO = pageOfProducts.map(product -> buildDTOFromProductEntity.execute(product));
 
