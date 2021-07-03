@@ -28,10 +28,8 @@ public class CustomerDTO implements Serializable {
 
     private UUID id;
 
-    @JsonProperty("first_name")
     private String firstName;
 
-    @JsonProperty("last_name")
     private String lastName;
 
     @CPF

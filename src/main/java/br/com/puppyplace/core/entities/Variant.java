@@ -14,8 +14,7 @@ public class Variant extends AbstractEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_product")
+    @ManyToOne
     private Product product;
 
     @Column(nullable = false)

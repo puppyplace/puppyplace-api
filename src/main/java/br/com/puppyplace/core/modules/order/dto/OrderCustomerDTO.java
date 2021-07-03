@@ -15,7 +15,9 @@ public class OrderCustomerDTO implements Serializable {
 
     private UUID customerId;
 
-    private String customerName;
+    private String customerFirstName;
+
+    private String customerLastName;
 
     private String customerDocument;
 
