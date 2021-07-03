@@ -87,10 +87,10 @@ public class AddressServiceImpl implements AddressService {
         log.info(">>> Searching addresses list from database");
 
         var pageOfAddresses = addressRepository.findByCustomerId(customerID, pageable);
-        var pageOfProductsDTO = pageOfAddresses.map(address -> mapper.map(address, AddressDTO.class));
+        var pageOfAddressDTO = pageOfAddresses.map(address -> mapper.map(address, AddressDTO.class));
 
         log.info(">>> Done");
-        return pageOfProductsDTO;
+        return pageOfAddressDTO;
     }
 
     private Address findOne(UUID addressID) {
