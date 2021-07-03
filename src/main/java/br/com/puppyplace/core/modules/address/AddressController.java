@@ -17,7 +17,6 @@ import java.util.UUID;
 @RestController
 @Validated
 @Slf4j
-@CrossOrigin(origins = "${base-frontend-url}", maxAge = 3600)
 public class AddressController {
     @Autowired
     private  AddressService addressService;

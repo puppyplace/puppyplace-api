@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/product")
 @Validated
 @Slf4j
-@CrossOrigin(origins = "${base-frontend-url}", maxAge = 3600)
 public class ProductController {
 
 	@Autowired
