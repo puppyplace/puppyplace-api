@@ -1,22 +1,14 @@
 package br.com.puppyplace.core.modules.product.dto;
 
+import br.com.puppyplace.core.modules.variant.dto.VariantDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
-
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import br.com.puppyplace.core.entities.Variant;
-import br.com.puppyplace.core.modules.variant.dto.VariantDTO;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder

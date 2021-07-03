@@ -1,6 +1,6 @@
 CREATE TABLE dbo.product_variant (
    id UNIQUEIDENTIFIER NOT NULL,
-   id_product UNIQUEIDENTIFIER NOT NULL,
+   id_product UNIQUEIDENTIFIER,
    stock INT NOT NULL,
    price numeric(19,2) NOT NULL,
    percent_promotional numeric(19,2) NULL,
