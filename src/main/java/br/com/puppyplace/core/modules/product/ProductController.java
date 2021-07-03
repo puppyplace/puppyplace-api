@@ -34,7 +34,7 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@PostMapping
 	public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO productDTO){
 		log.info(">>> [POST] A new product to create received. RequestBody: {}", productDTO);
@@ -46,26 +46,26 @@ public class ProductController {
 
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> list(
-		@Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
+		@Valid @RequestParam(value = "size", defaultValue = "9") @Min(1) Integer size,
 		@Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page){
 		var pageable = PageRequest.of(page, size);
-		
+
 		log.info(">>> [GET] A new request to get list of products in page {} with size {}", page, size);
 		var pageOfProductsDTO = productService.list(pageable);
 		log.info(">>> Response: {}", pageOfProductsDTO);
 
 		return ResponseEntity.ok(pageOfProductsDTO);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductDTO> get(@PathVariable("id") UUID id){
 		log.info(">>> [GET] A new request to get product with ID {}", id);
 		var productDTO = productService.get(id);
 		log.info(">>> Response: {}", productDTO);
 
-		return ResponseEntity.ok(productDTO); 
+		return ResponseEntity.ok(productDTO);
 	}
-	
+
 	@PutMapping("/{id}")
 	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable("id") UUID id){
 
@@ -75,7 +75,7 @@ public class ProductController {
 
 		return ResponseEntity.ok(productDTOUpdated);
 	}
-	
+
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable("id") UUID id) {
@@ -83,7 +83,7 @@ public class ProductController {
 		log.info(">>> [DELETE] A new request to delete product with ID {}", id);
 		productService.delete(id);
 		log.info(">>> Product deleted! No response.");
-		
+
 	}
-	
+
 }

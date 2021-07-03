@@ -14,7 +14,8 @@ public class Variant extends AbstractEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name="id_product")
     private Product product;
 
     @Column(nullable = false)
@@ -33,6 +34,10 @@ public class Variant extends AbstractEntity {
     private String isbnCode;
 
     public Float getPromotionalPrice() {
-        return (percentPromotional != null && price != null) ? price - (percentPromotional * 100 / price) : 0;
+        var total = (percentPromotional != null && price != null) ? price - (percentPromotional * 100 / price) : 0;
+        if (Float.isNaN(total)) {
+          total = 0;
+        }
+        return total;
     }
 }
