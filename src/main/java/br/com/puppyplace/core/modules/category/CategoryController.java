@@ -1,6 +1,7 @@
 package br.com.puppyplace.core.modules.category;
 
 import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
+import br.com.puppyplace.core.modules.product.dto.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,5 +70,18 @@ public class CategoryController {
         log.info(">>> [DELETE] A new request to delete category with ID {}", id);
         categoryService.delete(id);
         log.info(">>> Category deleted! No response.");
+    }
+
+    @GetMapping("/{id}/products")
+    public ResponseEntity<Page<ProductDTO>> listProducts(
+            @PathVariable("id") UUID categoryID,
+            @Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) Integer size,
+            @Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page){
+        log.info(">>> [GET] A new request to get products by category ID {}", categoryID);
+        var pageable = PageRequest.of(page, size);
+        var pageOfProductDTO = categoryService.listProducts(pageable, categoryID);
+        log.info(">>> Response: {}", pageOfProductDTO);
+
+        return ResponseEntity.ok(pageOfProductDTO);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.puppyplace.core.modules.category;
 
 import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
+import br.com.puppyplace.core.modules.product.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,4 +13,5 @@ public interface CategoryService {
     public CategoryDTO get(UUID id);
     public Page<CategoryDTO> list(Pageable pageable);
     public void delete(UUID id);
+    public Page<ProductDTO> listProducts(Pageable pageable, UUID categoryID);
 }

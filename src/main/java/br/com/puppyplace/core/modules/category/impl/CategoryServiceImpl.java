@@ -4,9 +4,13 @@ import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.ResourceAlreadyInUseException;
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 import br.com.puppyplace.core.entities.Category;
+import br.com.puppyplace.core.entities.Product;
+import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import br.com.puppyplace.core.modules.category.CategoryRepository;
 import br.com.puppyplace.core.modules.category.CategoryService;
 import br.com.puppyplace.core.modules.category.dto.CategoryDTO;
+import br.com.puppyplace.core.modules.product.ProductRepository;
+import br.com.puppyplace.core.modules.product.dto.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public CategoryDTO create(CategoryDTO categoryDTO) {           
         log.info(">>> Building category entity from category DTO");
@@ -103,5 +110,15 @@ public class CategoryServiceImpl implements CategoryService{
             log.error(">>> Category not found with ID {}", id);
             throw new ResourceNotFoundException("No category found with ID " + id.toString());
         });
+    }
+
+    public Page<ProductDTO> listProducts(Pageable pageable, UUID categoryID){
+        log.info(">>> Searching products list by category from database");
+
+        var pageOfProducts = productRepository.findByCategoriesId(categoryID, pageable);
+        var pageOfAddressDTO = pageOfProducts.map(product -> mapper.map(product, ProductDTO.class));
+
+        log.info(">>> Done");
+        return pageOfAddressDTO;
     }
 }
