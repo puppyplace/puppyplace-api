@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -68,6 +69,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_WhenGetExistentProduct(){
         //given
         when(productRepository.findById(productID)).thenReturn(Optional.of(product));
@@ -99,6 +101,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_WhenCreateANewProduct(){
         //given
         when(productRepository.save(any(Product.class))).thenReturn(product);
@@ -117,6 +120,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnError_WhenCreateANewProductThatViolatesDataIntegrity(){
         //given
         when(productRepository.save(any(Product.class)))
@@ -131,6 +135,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_WhenUpdateProduct(){
         //given
         when(productRepository.findById(productID)).thenReturn(Optional.of(product));
@@ -151,6 +156,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnError_WhenUpdateProductThatViolatesDataIntegrity(){
         //given
         when(productRepository.findById(productID))
@@ -185,6 +191,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_WhenGetPageOfProducts(){
         //given
         var listOfProduct = easyRandom.objects(Product.class, 2)
