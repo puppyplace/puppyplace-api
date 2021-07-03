@@ -5,6 +5,7 @@ import br.com.puppyplace.core.modules.address.dto.AddressDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -59,6 +60,7 @@ public class AddressControllerTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_whenSendAValidAddressToCreate() throws Exception {
         // given
         when(addressService.create(customerID, addressDTO)).thenReturn(addressDTO);
@@ -108,6 +110,7 @@ public class AddressControllerTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_whenUpdateAddressWithValidPayload() throws Exception {
         // given
         when(addressService.update(customerID, addressID, addressDTO)).thenReturn(addressDTO);
@@ -166,6 +169,7 @@ public class AddressControllerTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_WhenGetAddressWithValidID() throws Exception{
         // given
         when(addressService.get(customerID, addressID)).thenReturn(addressDTO);

@@ -4,6 +4,7 @@ import br.com.puppyplace.core.modules.customer.dto.CustomerDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +118,7 @@ class CustomerControllerTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_whenUpdateCustomerWithValidPayload() throws Exception {
         // given
         when(customerService.update(any(CustomerDTO.class),any(UUID.class))).thenReturn(customerDTO);
@@ -173,6 +175,7 @@ class CustomerControllerTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_whenGetCustomerWithValidID() throws Exception {
         // given
         when(customerService.get(customerID)).thenReturn(customerDTO);
