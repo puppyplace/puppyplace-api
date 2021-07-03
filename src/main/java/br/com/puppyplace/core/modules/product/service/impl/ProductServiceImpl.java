@@ -1,21 +1,5 @@
 package br.com.puppyplace.core.modules.product.service.impl;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import br.com.puppyplace.core.entities.Category;
-import br.com.puppyplace.core.entities.ProductOrder;
-import br.com.puppyplace.core.modules.category.CategoryRepository;
-import br.com.puppyplace.core.modules.order.dto.ProductOrderDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import br.com.puppyplace.core.commons.exceptions.BusinessException;
 import br.com.puppyplace.core.commons.exceptions.ResourceNotFoundException;
 import br.com.puppyplace.core.entities.Product;
@@ -24,7 +8,20 @@ import br.com.puppyplace.core.modules.product.dto.ProductDTO;
 import br.com.puppyplace.core.modules.product.service.BuildDTOFromProductEntity;
 import br.com.puppyplace.core.modules.product.service.BuildProductFromDTO;
 import br.com.puppyplace.core.modules.product.service.ProductService;
+import br.com.puppyplace.core.modules.variant.service.BuildDTOFromVariantEntity;
+import br.com.puppyplace.core.modules.variant.service.BuildVariantFromDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,14 +37,18 @@ public class ProductServiceImpl implements ProductService {
     private BuildProductFromDTO buildProductFromDTO;
 
     @Autowired
+    private BuildDTOFromVariantEntity buildVariantEntity;
+
+    @Autowired
     private BuildDTOFromProductEntity buildDTOFromProductEntity;
 
     public ProductDTO get(UUID id) {
         return buildDTOFromProductEntity.execute(this.findOne(id));
     }
 
+    @Transactional
     public ProductDTO create(ProductDTO productDTO) {
-        try {            
+        try {
             if(productCodeIsEmpty(productDTO)){
                 generateProductCode(productDTO);
             }
@@ -58,7 +59,10 @@ public class ProductServiceImpl implements ProductService {
             product.setUpdatedAt(new Date());
 
             productRepository.save(product);
+
             productDTO.setId(product.getId());
+            productDTO.setVariants(product.getVariants().stream().map(variant ->
+              buildVariantEntity.execute(variant)).collect(Collectors.toList()));
 
             log.info(">>> Entity persisted!");
 
@@ -70,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductDTO update(ProductDTO productDTO, UUID id) {
-        try {  
+        try {
             log.info(">>> Starting update entity");
 
             this.findOne(id);
@@ -97,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
 
     public Page<ProductDTO> list(Pageable pageable) {
         log.info(">>> Searching products listt from database");
-        
+
         var pageOfProducts = productRepository.findAll(pageable);
         var pageOfProductsDTO = pageOfProducts.map(product -> buildDTOFromProductEntity.execute(product));
 

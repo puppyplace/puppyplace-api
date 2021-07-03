@@ -23,6 +23,10 @@ public class ProductOrder extends AbstractEntity {
     @JoinColumn(name= "id_product", nullable = false)
     private Product product;
 
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id_variant", nullable = false)
+    private Variant variant;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "id_order", nullable = false)
     private Order order;

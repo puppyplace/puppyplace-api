@@ -54,8 +54,9 @@ public class Product extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "product",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Variant> variants = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id_product")
+    private List<Variant> variants;
 
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_partner")
