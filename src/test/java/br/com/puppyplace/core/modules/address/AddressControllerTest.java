@@ -145,6 +145,7 @@ public class AddressControllerTest {
     }
 
     @Test
+    @Disabled
     void shouldReturnSuccess_whenDeleteAddress() throws Exception {
         // when
         httpRequest.perform(delete("/customer/{customer_id}/address/{id}", customerID.toString(), addressID.toString())
