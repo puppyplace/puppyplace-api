@@ -9,7 +9,6 @@ CREATE TABLE dbo.customer (
     birthdate date NOT NULL,
     cellphone varchar(255) NULL,
     "password" varchar(255) NOT NULL,
-    CONSTRAINT customer_document_key UNIQUE (document),
     CONSTRAINT customer_pkey PRIMARY KEY (id)
 );
 
