@@ -48,9 +48,11 @@ public class CustomerServiceImplTest {
         this.easyRandom = new EasyRandom();
         this.customerDTO = easyRandom.nextObject(CustomerDTO.class);
         this.customerDTO.setBirthdate(LocalDate.of(2000, 12, 01));
+        this.customerDTO.setEmail("teste.unitario@gmail.com");
 
         this.customer = easyRandom.nextObject(Customer.class);
         this.customer.setBirthdate(LocalDate.of(2000, 12, 01));
+        this.customer.setEmail("teste.unitario@gmail.com");
         this.customerID = UUID.randomUUID();
 
         ReflectionTestUtils.setField(customerService, "mapper", new ModelMapper());
@@ -93,7 +95,7 @@ public class CustomerServiceImplTest {
     @Test
     void shouldReturnError_whenCreateAnExistentCustomer(){
         // given
-        when(customerRepository.findByDocument(any(String.class))).thenReturn(Optional.of(customer));
+        when(customerRepository.findByEmail(customerDTO.getEmail())).thenReturn(Optional.of(customer));
         // then
         assertThrows(ResourceAlreadyInUseException.class, () -> {
             customerService.create(customerDTO);

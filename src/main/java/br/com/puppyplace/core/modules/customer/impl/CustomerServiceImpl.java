@@ -45,8 +45,6 @@ public class CustomerServiceImpl implements CustomerService {
 
         var existingCustomer = customerRepository.findByEmail(customerDTO.getEmail());
 
-        System.out.printf(String.valueOf(existingCustomer));
-
         if (existingCustomer.isPresent()) {
             log.error(">>> Customer is already in use. Returning error to client");
             throw new ResourceAlreadyInUseException("Customer is already in use");
