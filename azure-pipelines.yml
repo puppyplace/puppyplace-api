@@ -23,14 +23,16 @@ steps:
   displayName: 'Unit tests'
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
-    goals: 'clean verify -Dsonar.projectKey=puppyplacepetshop_PuppyPlace -Dsonar.qualitygate.wait=true sonar:sonar'
-    publishJUnitResults: true
+    mavenOptions: '-Xmx3072m -Dmaven.repo.local=$(Pipeline.Workspace)/.m2/repository'
+    publishJUnitResults: false
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     codeCoverageToolOption: 'JaCoCo'
+    isJacocoCoverageReportXML: true
     sonarQubeRunAnalysis: true
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
+    mavenAuthenticateFeed: false
+    goals: 'clean verify -Dsonar.projectKey=puppyplacepetshop_PuppyPlace -Dsonar.qualitygate.wait=true -Dmaven.repo.local=$(Pipeline.Workspace)/.m2/repository sonar:sonar'
 - task: SonarCloudPublish@1
 - task: Bash@3
   displayName: 'Building application'
