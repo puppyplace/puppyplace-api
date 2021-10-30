@@ -3,23 +3,17 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-variables:
-  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
-  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-
 trigger:
 - develop
 
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+
 steps:
-- task: Cache@2
-  inputs:
-    key: '"funcs" | maven |"$(Agent.OS)" | **/pom.xml'
-    restoreKeys: |
-    path: $(MAVEN_CACHE_FOLDER)
-  displayName: Cache Maven local repo
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud'
@@ -30,22 +24,14 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
-    goals: 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=puppyplacepetshop_PuppyPlace'
+    goals: 'clean verify -Dsonar.projectKey=puppyplacepetshop_PuppyPlace -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml sonar:sonar'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    codeCoverageToolOption: JaCoCo
-    codeCoverageFailIfEmpty: false
-    codeCoverageRestoreOriginalPomXml: true
+    codeCoverageToolOption: 'JaCoCo'
+    sonarQubeRunAnalysis: true
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    isJacocoCoverageReportXML: true
-    sqMavenPluginVersionChoice: 'latest'
 - task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
 - task: Bash@3
   displayName: 'Building application'
   inputs:
@@ -61,3 +47,9 @@ steps:
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
+- task: Cache@2
+  inputs:
+    key: '"funcs" | maven |"$(Agent.OS)" | **/pom.xml'
+    restoreKeys: |
+    path: $(MAVEN_CACHE_FOLDER)
+  displayName: Cache Maven local repo
