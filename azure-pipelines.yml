@@ -15,20 +15,14 @@ steps:
     SonarCloud: 'SonarCloud'
     organization: 'puppyplacepetshop'
     scannerMode: 'Other'
-    extraProperties: |
-      # Additional properties that will be passed to the scanner,
-      # Put one key=value per line, example:
-      # sonar.exclusions=**/*.bin
-      sonar.projectKey=puppyplacepetshop_PuppyPlace
-      sonar.projectName=PuppyPlace
 - task: Maven@3
   displayName: 'Unit tests'
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'test'
+    goals: 'clean verify sonar:sonar'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    codeCoverageToolOption: 'JaCoCo'
+    codeCoverageToolOption: JaCoCo
     codeCoverageFailIfEmpty: false
     codeCoverageRestoreOriginalPomXml: true
     javaHomeOption: 'JDKVersion'
@@ -38,25 +32,23 @@ steps:
     effectivePomSkip: false
     isJacocoCoverageReportXML: true
     sqMavenPluginVersionChoice: 'latest'
-
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
 - task: Bash@3
   displayName: 'Building application'
   inputs:
     targetType: 'inline'
     script: 'mvn package -Dmaven.test.skip=true'
-
 - task: CopyFiles@2
   displayName: 'Copying files'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: '**/*.jar'
     TargetFolder: '$(build.artifactstagingdirectory)'
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
-
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
