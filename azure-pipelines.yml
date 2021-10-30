@@ -10,6 +10,17 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'puppyplacepetshop'
+    scannerMode: 'Other'
+    extraProperties: |
+      # Additional properties that will be passed to the scanner,
+      # Put one key=value per line, example:
+      # sonar.exclusions=**/*.bin
+      sonar.projectKey=puppyplacepetshop_PuppyPlace
+      sonar.projectName=PuppyPlace
 - task: Maven@3
   displayName: 'Unit tests'
   inputs:
@@ -45,17 +56,7 @@ steps:
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: 'puppyplacepetshop'
-    scannerMode: 'Other'
-    extraProperties: |
-      # Additional properties that will be passed to the scanner,
-      # Put one key=value per line, example:
-      # sonar.exclusions=**/*.bin
-      sonar.projectKey=puppyplacepetshop_PuppyPlace
-      sonar.projectName=PuppyPlace
+
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
