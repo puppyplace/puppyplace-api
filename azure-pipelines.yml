@@ -24,20 +24,13 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
-    goals: 'clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=puppyplacepetshop_PuppyPlace'
+    goals: 'clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=puppyplacepetshop_PuppyPlace -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    codeCoverageToolOption: JaCoCo
-    codeCoverageFailIfEmpty: false
-    codeCoverageRestoreOriginalPomXml: true
+    codeCoverageToolOption: 'JaCoCo'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
     mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    isJacocoCoverageReportXML: true
-    sqMavenPluginVersionChoice: 'latest'
-#- task: SonarCloudAnalyze@1
 - task: SonarCloudPublish@1
 - task: Bash@3
   displayName: 'Building application'
