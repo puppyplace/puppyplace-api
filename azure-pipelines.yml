@@ -12,8 +12,7 @@ pool:
 variables:
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
   MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) \
-  -Dsonar.projectKey=puppyplacepetshop_PuppyPlace \
-  -Dsonar.coverage.jacoco.xmlReportPaths=**/target/site/jacoco/jacoco.xml'
+  -Dsonar.projectKey=puppyplacepetshop_PuppyPlace '
 
 steps:
 - task: SonarCloudPrepare@1
