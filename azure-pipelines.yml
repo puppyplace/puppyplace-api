@@ -11,8 +11,7 @@ pool:
 
 variables:
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
-  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) \
-  -Dsonar.projectKey=puppyplacepetshop_PuppyPlace '
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 
 steps:
 - task: SonarCloudPrepare@1
@@ -25,7 +24,11 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
-    goals: 'clean $(MAVEN_OPTS) verify sonar:sonar'
+    goals: 'clean \
+    verify \
+    sonar:sonar \
+    -Dsonar.coverage.jacoco.xmlReportPaths=**/target/site/jacoco/jacoco.xml \
+    -Dsonar.projectKey=puppyplacepetshop_PuppyPlace '
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     codeCoverageToolOption: 'JaCoCo'
