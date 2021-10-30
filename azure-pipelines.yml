@@ -14,12 +14,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: Cache@2
-  inputs:
-    key: '"funcs" | maven |"$(Agent.OS)" | **/pom.xml'
-    restoreKeys: |
-    path: $(MAVEN_CACHE_FOLDER)
-  displayName: Cache Maven local repo
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud'
@@ -62,3 +56,9 @@ steps:
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
+- task: Cache@2
+  inputs:
+    key: '"funcs" | maven |"$(Agent.OS)" | **/pom.xml'
+    restoreKeys: |
+    path: $(MAVEN_CACHE_FOLDER)
+  displayName: Cache Maven local repo
