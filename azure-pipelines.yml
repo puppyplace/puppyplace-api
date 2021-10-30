@@ -24,7 +24,7 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
-    goals: 'clean verify -Dsonar.projectKey=puppyplacepetshop_PuppyPlace -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml sonar:sonar'
+    goals: 'clean verify -Dsonar.projectKey=puppyplacepetshop_PuppyPlace -Dsonar.coverage.jacoco.xmlReportPaths=**/target/site/jacoco/jacoco.xml sonar:sonar'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     codeCoverageToolOption: 'JaCoCo'
