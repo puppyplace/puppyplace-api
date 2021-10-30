@@ -29,7 +29,8 @@ steps:
   displayName: 'Unit tests'
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'clean verify'
+    mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
+    goals: 'mvn verify sonar:sonar'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     codeCoverageToolOption: JaCoCo
