@@ -37,10 +37,8 @@ steps:
     effectivePomSkip: false
     isJacocoCoverageReportXML: true
     sqMavenPluginVersionChoice: 'latest'
-#- task: SonarCloudAnalyze@1
+- task: SonarCloudAnalyze@1
 - task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
 - task: Bash@3
   displayName: 'Building application'
   inputs:
