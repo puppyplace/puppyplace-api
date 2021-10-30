@@ -25,7 +25,7 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
-    goals: 'clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar $(MAVEN_OPTS)'
+    goals: 'clean $(MAVEN_OPTS) verify sonar:sonar'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     codeCoverageToolOption: 'JaCoCo'
