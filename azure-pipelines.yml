@@ -24,7 +24,7 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
-    goals: 'clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=puppyplacepetshop_PuppyPlace '
+    goals: 'clean verify sonar:sonar -Dsonar.projectKey=puppyplacepetshop_PuppyPlace '
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     codeCoverageToolOption: 'JaCoCo'
