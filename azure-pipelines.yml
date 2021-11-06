@@ -41,7 +41,7 @@ steps:
     repository: 'puppyplace-api'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
-    tags: 
+    tags: |
       $(Build.BuildId)
       latest
 - task: CopyFiles@2
