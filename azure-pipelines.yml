@@ -35,6 +35,12 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'mvn package -Dmaven.test.skip=true'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'puppyplace-9985'
+    repository: 'puppyplace-api'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
 - task: CopyFiles@2
   displayName: 'Copying files'
   inputs:
